@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --boa-blue: #0033A0;
+        --boa-yellow: #FFC72C;
+        --boa-dark: #1F2937;
+    }
+
+    body {
+        @apply antialiased;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+@layer components {
+
+    /* Custom BOA button styles */
+    .btn-primary {
+        @apply bg-boa-blue hover:bg-blue-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5;
+    }
+
+    .btn-secondary {
+        @apply bg-boa-yellow hover:bg-yellow-500 text-boa-dark font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5;
+    }
+
+    .btn-outline {
+        @apply border-2 border-boa-blue text-boa-blue hover:bg-boa-blue hover:text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300;
+    }
+
+    /* Input styles */
+    .input-field {
+        @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-boa-blue focus:border-transparent transition-all duration-200;
+    }
+
+    /* Card styles */
+    .card {
+        @apply bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden;
+    }
+
+    /* Section container */
+    .section-container {
+        @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 lg:py-20;
+    }
+}
+
+@layer utilities {
+    .gradient-boa {
+        background: linear-gradient(135deg, #0033A0 0%, #0055D4 100%);
+    }
+
+    .gradient-boa-radial {
+        background: radial-gradient(circle at top right, #0033A0 0%, #001F5C 100%);
+    }
+
+    .text-gradient-boa {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-boa-blue to-blue-600;
+    }
+}
