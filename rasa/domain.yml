@@ -1,0 +1,103 @@
+version: "3.1"
+
+intents:
+  - saludar
+  - despedir
+  - consultar_vuelo
+  - consultar_puerta
+  - hacer_checkin
+  - solicitar_ticket
+  - solicitar_factura
+  - cambiar_vuelo
+  - solicitar_reembolso
+  - politicas_equipaje
+  - rastrear_equipaje
+  - perdida_equipaje
+  - viajar_mascota
+  - consultar_destinos
+  - consultar_promociones
+  - contacto_soporte
+  - afirmar
+  - negar
+  - nlu_fallback
+
+entities:
+  - flight_number
+  - tracking_code
+
+responses:
+  utter_saludo:
+  - text: "¡Hola! Soy el asistente virtual de BOA - Boliviana de Aviación. ¿En qué puedo ayudarte hoy?"
+  - text: "¡Buen día! Bienvenido a BOA. ¿Cómo puedo asistirte?"
+  - text: "¡Hola! Estoy aquí para ayudarte con tus vuelos. ¿Qué necesitas?"
+
+  utter_despedida:
+  - text: "¡Hasta luego! Que tengas un excelente vuelo con BOA. ✈️"
+  - text: "Gracias por contactarte. ¡Buen viaje! 🛫"
+  - text: "¡Hasta pronto! Estamos para servirte siempre."
+
+  utter_consultar_vuelo:
+  - text: "Para consultar el estado de tu vuelo, necesito tu número de reserva o número de vuelo (ej: OB-760). También puedes ingresar a 'Mis Reservas' en tu panel de usuario."
+  - text: "Puedo ayudarte con el estado de tu vuelo. Por favor, proporciona tu número de vuelo o código de reserva."
+
+  utter_consultar_puerta:
+  - text: "Tu vuelo OB-760 a Miami sale por la **Puerta 4**. El embarque comienza a las 21:15.\n\nEstado actual: **A TIEMPO** ✅"
+  - text: "La puerta de embarque es la número **4**. Por favor, llega con 30 minutos de anticipación."
+
+  utter_hacer_checkin:
+  - text: "¡Hagamos tu check-in ahora! He encontrado tu reserva.\n\n✅ Asiento asignado: 12F\n\n¿Confirmas el check-in?"
+  - text: "Puedes hacer check-in desde nuestra app móvil o en el sitio web hasta 24 horas antes del vuelo. ¿Necesitas ayuda con el proceso?"
+
+  utter_solicitar_ticket:
+  - text: "Aquí tienes una copia digital de tu boleto para el vuelo OB-760.\n\n📄 [Descargar Boleto PDF](#)\n\nTambién lo he enviado a tu correo electrónico registrado."
+  - text: "He enviado una copia de tu itinerario a tu correo electrónico. ¿Necesitas algo más?"
+
+  utter_solicitar_factura:
+  - text: "Puedes generar tu factura ingresando tu apellido y código de reserva en: boa.bo/facturacion\n\n¿Necesitas que te guíe en el proceso?"
+  - text: "Para facturación, necesito:\n1. Código de reserva\n2. NIT o CI\n3. Razón social\n\n¿Tienes estos datos a la mano?"
+
+  utter_cambiar_vuelo:
+  - text: "Para cambios de fecha o ruta:\n1. Ve a 'Mis Viajes'\n2. Selecciona 'Cambiar Vuelo'\n3. Elige la nueva fecha\n\n⚠️ Nota: Puede aplicar diferencia tarifaria."
+  - text: "¿Quieres adelantar tu vuelo? Hay espacio disponible en el vuelo de las 18:00. ¿Te interesa?"
+
+  utter_solicitar_reembolso:
+  - text: "Los reembolsos se pueden solicitar desde tu panel de usuario en la sección 'Reembolsos'.\n\n⏱️ Tiempo de procesamiento: 7-15 días hábiles.\n\n¿Necesitas ayuda con algún caso específico?"
+  - text: "Para solicitar un reembolso:\n1. Ingresa a tu cuenta en boa.bo\n2. Ve a 'Mis Reservas'\n3. Selecciona 'Solicitar Reembolso'\n\n¿Tienes dudas sobre el proceso?"
+
+  utter_politicas_equipaje:
+  - text: "En BOA, cada pasajero puede llevar:\n\n✈️ **Equipaje facturado:**\n- Económica: 23kg\n- Ejecutiva: 32kg\n\n🎒 **Equipaje de mano:**\n- 1 maleta de 10kg\n- Dimensiones: 55x40x20cm\n\n¿Necesitas registrar equipaje especial?"
+  - text: "Políticas de equipaje BOA:\n- Bodega: 23kg (económica), 32kg (ejecutiva)\n- Cabina: 10kg\n\nPara equipaje adicional, se aplican cargos según la ruta. ¿Viajas con algo especial?"
+
+  utter_rastrear_equipaje:
+  - text: "Para rastrear tu equipaje, necesito el código de seguimiento (ej: BOA-VVI-MIA-001).\n\nTambién puedes rastrearlo en: boa.bo/equipaje"
+  - text: "He encontrado tu equipaje:\n\n📦 Código: BOA-VVI-MIA-001\n✅ Estado: EN TRÁNSITO\n📍 Ubicación: Aeropuerto de Miami\n\n¿Necesitas más información?"
+
+  utter_perdida_equipaje:
+  - text: "Lamentamos que hayas perdido tu equipaje. 😔\n\nPor favor:\n1. Dirígete al mostrador de equipaje perdido en el aeropuerto\n2. O contáctanos al +591 800 10 3000\n\nNecesitarás tu número de reserva."
+  - text: "Para reportar equipaje perdido:\n📞 +591 800 10 3000\n📧 equipaje@boa.bo\n\nTe ayudaremos a localizarlo lo antes posible."
+
+  utter_viajar_mascota:
+  - text: "Para viajar con mascotas, necesitas:\n\n1️⃣ Certificado de salud vigente (máx. 10 días)\n2️⃣ Transportín aprobado\n3️⃣ Reserva previa (mín. 48h)\n\n🐕 Mascotas pequeñas (<8kg) viajan en cabina.\n🐕 Mascotas grandes viajan en bodega.\n\n¿Tienes alguna pregunta específica?"
+  - text: "¡Claro que puedes viajar con tu mascota! 🐾\n\nRequisitos:\n- Certificado de salud\n- Vacunas al día\n- Transportín adecuado\n\n¿Qué tipo de mascota tienes?"
+
+  utter_consultar_destinos:
+  - text: "BOA vuela a:\n\n🌎 **Internacionales:**\n- Miami, Buenos Aires, São Paulo, Madrid\n\n🇧🇴 **Nacionales:**\n- Santa Cruz, La Paz, Cochabamba, Tarija, Sucre\n\n¿A dónde quieres viajar?"
+  - text: "Nuestros destinos más populares:\n✈️ Miami\n✈️ Buenos Aires\n✈️ Madrid\n✈️ São Paulo\n\n¿Buscas algún destino en particular?"
+
+  utter_consultar_promociones:
+  - text: "🎉 **Promociones vigentes:**\n\n- Santa Cruz ↔ Miami: $399 USD\n- La Paz ↔ Buenos Aires: $280 USD\n\n*Válido hasta fin de mes. Sujeto a disponibilidad.\n\n¿Te interesa alguna?"
+  - text: "Tenemos ofertas especiales esta semana. Visita: boa.bo/promociones\n\n¿Quieres que te ayude a reservar?"
+
+  utter_contacto_soporte:
+  - text: "Te conecto con un agente humano. Por favor, espera un momento... 👤"
+    metadata:
+      handoff_to_human: true
+  - text: "Entiendo que necesitas ayuda personalizada. Un agente te atenderá en breve. ⏳"
+
+  utter_default:
+  - text: "Lo siento, no entendí. ¿Podrías reformular tu pregunta?\n\nPuedo ayudarte con:\n✈️ Vuelos\n📦 Equipaje\n🐾 Mascotas\n💰 Reembolsos\n🎫 Check-in"
+  - text: "Disculpa, no comprendí. Puedo ayudarte con: vuelos, equipaje, reembolsos, check-in, mascotas, facturas, puerta de embarque o cambios de fecha."
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

@@ -1,3 +1,11 @@
 {
-  "/page": "app/page.js"
+  "/not-found": "app/not-found.js",
+  "/page": "app/page.js",
+  "/(public)/flights/page": "app/(public)/flights/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/flights/route": "app/api/flights/route.js",
+  "/(dashboard)/my-bookings/page": "app/(dashboard)/my-bookings/page.js",
+  "/(public)/flight-status/page": "app/(public)/flight-status/page.js",
+  "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js",
+  "/(public)/login/page": "app/(public)/login/page.js"
 }

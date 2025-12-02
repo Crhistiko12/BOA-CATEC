@@ -1,0 +1,60 @@
+version: "3.1"
+
+stories:
+- story: Consulta de vuelo completa
+  steps:
+  - intent: saludar
+  - action: utter_saludo
+  - intent: consultar_vuelo
+  - action: utter_consultar_vuelo
+  - intent: consultar_puerta
+  - action: utter_consultar_puerta
+  - intent: despedir
+  - action: utter_despedida
+
+- story: Proceso de check-in
+  steps:
+  - intent: saludar
+  - action: utter_saludo
+  - intent: hacer_checkin
+  - action: utter_hacer_checkin
+  - intent: afirmar
+  - action: utter_solicitar_ticket
+  - intent: despedir
+  - action: utter_despedida
+
+- story: Solicitud de reembolso
+  steps:
+  - intent: saludar
+  - action: utter_saludo
+  - intent: solicitar_reembolso
+  - action: utter_solicitar_reembolso
+  - intent: afirmar
+  - action: utter_despedida
+
+- story: Consulta de equipaje
+  steps:
+  - intent: saludar
+  - action: utter_saludo
+  - intent: politicas_equipaje
+  - action: utter_politicas_equipaje
+  - intent: rastrear_equipaje
+  - action: utter_rastrear_equipaje
+  - intent: despedir
+  - action: utter_despedida
+
+- story: Viaje con mascota
+  steps:
+  - intent: saludar
+  - action: utter_saludo
+  - intent: viajar_mascota
+  - action: utter_viajar_mascota
+  - intent: afirmar
+  - action: utter_despedida
+
+- story: Escalamiento a agente humano
+  steps:
+  - intent: saludar
+  - action: utter_saludo
+  - intent: contacto_soporte
+  - action: utter_contacto_soporte

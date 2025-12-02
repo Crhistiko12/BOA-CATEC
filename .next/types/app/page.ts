@@ -1,4 +1,4 @@
-// File: /home/tiko_x/catec/base de datos 2/Semana-C/Boa-CATEC/app/page.js
+// File: C:\Users\DESTOCK\Desktop\semana C - proyecto MVC BOA\BOA-CATEC\app\page.tsx
 import * as entry from '../../../app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

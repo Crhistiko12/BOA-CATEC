@@ -1,0 +1,179 @@
+version: "3.1"
+
+nlu:
+- intent: saludar
+  examples: |
+    - hola
+    - buenos días
+    - buenas tardes
+    - buenas noches
+    - ¿cómo estás?
+    - hello
+    - hey
+    - hola bot
+    - qué tal
+
+- intent: despedir
+  examples: |
+    - adiós
+    - hasta luego
+    - nos vemos
+    - chao
+    - bye
+    - hasta pronto
+    - me voy
+    - gracias, eso es todo
+
+- intent: consultar_vuelo
+  examples: |
+    - ¿cuál es el estado de mi vuelo?
+    - quiero saber sobre mi vuelo
+    - tengo un vuelo, ¿cómo va?
+    - [OB-760](flight_number)
+    - vuelo [OB-123](flight_number)
+    - estado de vuelo
+    - mi vuelo está retrasado?
+    - ¿a qué hora sale mi vuelo?
+    - información de vuelo [OB-456](flight_number)
+    - consultar vuelo
+
+- intent: consultar_puerta
+  examples: |
+    - ¿cuál es mi puerta de embarque?
+    - qué puerta tiene mi vuelo
+    - puerta de embarque
+    - gate del vuelo [OB-760](flight_number)
+    - dónde embarco
+    - número de puerta
+
+- intent: hacer_checkin
+  examples: |
+    - quiero hacer check-in
+    - hacer check in para mi vuelo
+    - ¿cómo hago check-in?
+    - checkin para [OB-789](flight_number)
+    - web check in
+    - check in online
+    - necesito hacer check-in
+
+- intent: solicitar_ticket
+  examples: |
+    - quiero mi ticket
+    - necesito mi boleto
+    - enviar copia de mi pasaje
+    - descargar ticket
+    - ver mi boleto
+    - pasaje electrónico
+
+- intent: solicitar_factura
+  examples: |
+    - necesito factura
+    - quiero factura con NIT
+    - facturación
+    - cómo obtengo factura
+    - generar factura
+    - factura electrónica
+
+- intent: cambiar_vuelo
+  examples: |
+    - quiero cambiar mi vuelo
+    - cambiar fecha de vuelo
+    - reprogramar vuelo
+    - modificar reserva
+    - cambiar de fecha
+    - adelantar mi vuelo
+    - ¿puedo cambiar la fecha?
+
+- intent: solicitar_reembolso
+  examples: |
+    - necesito solicitar un reembolso
+    - quiero reembolsar mi boleto
+    - ¿cómo pido un reembolso?
+    - mi vuelo se canceló, quiero reembolso
+    - devolución de dinero
+    - cancelar y reembolsar
+    - proceso de reembolso
+
+- intent: politicas_equipaje
+  examples: |
+    - ¿cuáles son las políticas de equipaje?
+    - ¿qué equipaje puedo llevar?
+    - equipaje permitido
+    - ¿puedo llevar equipaje extra?
+    - peso máximo de maleta
+    - dimensiones de equipaje
+    - equipaje de mano
+
+- intent: rastrear_equipaje
+  examples: |
+    - rastrear mi equipaje
+    - seguimiento de maleta
+    - dónde está mi equipaje
+    - código de seguimiento [BOA-VVI-MIA-001](tracking_code)
+    - tracking de equipaje
+
+- intent: perdida_equipaje
+  examples: |
+    - perdí mi equipaje
+    - no encuentro mi maleta
+    - equipaje perdido
+    - ¿qué hago si perdí mi equipaje?
+    - mi maleta no llegó
+    - equipaje extraviado
+
+- intent: viajar_mascota
+  examples: |
+    - quiero viajar con mi mascota
+    - ¿puedo llevar a mi perro?
+    - mascotas en cabina
+    - certificado de salud para mascotas
+    - viajar con gato
+    - requisitos para mascotas
+    - transportín para mascota
+
+- intent: consultar_destinos
+  examples: |
+    - ¿a qué destinos vuelan?
+    - destinos disponibles
+    - rutas de BOA
+    - vuelos internacionales
+    - vuelos nacionales
+    - ¿vuelan a Miami?
+    - ¿hay vuelos a Buenos Aires?
+
+- intent: consultar_promociones
+  examples: |
+    - ¿tienen promociones?
+    - ofertas de vuelos
+    - descuentos
+    - vuelos baratos
+    - promociones vigentes
+
+- intent: contacto_soporte
+  examples: |
+    - necesito hablar con un agente
+    - quiero contacto humano
+    - soporte técnico
+    - hablar con persona
+    - atención al cliente
+    - ayuda de un operador
+    - transferir a agente
+
+- intent: afirmar
+  examples: |
+    - sí
+    - si
+    - claro
+    - por supuesto
+    - correcto
+    - exacto
+    - ok
+    - está bien
+
+- intent: negar
+  examples: |
+    - no
+    - no gracias
+    - negativo
+    - para nada
+    - no quiero

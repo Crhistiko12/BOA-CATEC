@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String?
+  name          String?
+  role          Role      @default(USER)
+  bookings      Booking[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  chatSessions  ChatSession[]
+}
+
+enum Role {
+  USER
+  ADMIN
+  SUPPORT
+}
+
+model Booking {
+  id            String    @id @default(uuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  flightId      String
+  flight        Flight    @relation(fields: [flightId], references: [id])
+  status        BookingStatus @default(CONFIRMED)
+  totalPrice    Float
+  passengers    Passenger[]
+  baggage       Baggage[]
+  pets          Pet[]
+  refundRequest RefundRequest?
+  payment       Payment?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum BookingStatus {
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+model Flight {
+  id            String    @id @default(uuid())
+  flightNumber  String    @unique
+  origin        String
+  destination   String
+  departureTime DateTime
+  arrivalTime   DateTime
+  price         Float
+  capacity      Int
+  bookings      Booking[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Passenger {
+  id        String  @id @default(uuid())
+  bookingId String
+  booking   Booking @relation(fields: [bookingId], references: [id])
+  firstName String
+  lastName  String
+  type      PassengerType
+  seatNumber String?
+}
+
+enum PassengerType {
+  ADULT
+  CHILD
+  INFANT
+}
+
+model Baggage {
+  id            String    @id @default(uuid())
+  bookingId     String
+  booking       Booking   @relation(fields: [bookingId], references: [id])
+  weight        Float     // Peso en kg
+  dimensions    String    // Largo x Ancho x Alto
+  special       Boolean   // Equipaje especial
+  description   String?   // Descripción de contenido
+  status        BaggageStatus    @default(REGISTERED)
+  trackingCode  String    @unique // Código de seguimiento único
+  createdAt     DateTime  @default(now())
+}
+
+enum BaggageStatus {
+  REGISTERED
+  LOADED
+  DELIVERED
+  LOST
+}
+
+model Pet {
+  id            String    @id @default(uuid())
+  bookingId     String
+  booking       Booking   @relation(fields: [bookingId], references: [id])
+  type          String    // perro, gato, etc.
+  breed         String
+  weight        Float
+  carrierDimensions String // Dimensiones del transportín
+  healthCertificate String // URL del certificado de salud
+  status        String    @default("registered")
+  createdAt     DateTime  @default(now())
+}
+
+model RefundRequest {
+  id            String    @id @default(uuid())
+  bookingId     String    @unique
+  booking       Booking   @relation(fields: [bookingId], references: [id])
+  reason        String
+  status        RefundStatus @default(PENDING)
+  amount        Float
+  adminComment  String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum RefundStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PROCESSED
+}
+
+model Payment {
+  id            String    @id @default(uuid())
+  bookingId     String    @unique
+  booking       Booking   @relation(fields: [bookingId], references: [id])
+  stripeId      String
+  amount        Float
+  status        String
+  createdAt     DateTime  @default(now())
+}
+
+model ChatSession {
+  id        String    @id @default(uuid())
+  userId    String?
+  user      User?     @relation(fields: [userId], references: [id])
+}
