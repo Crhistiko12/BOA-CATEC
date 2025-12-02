@@ -1,0 +1,87 @@
+version: "3.1"
+
+rules:
+- rule: Saludo
+  steps:
+  - intent: saludar
+  - action: utter_saludo
+
+- rule: Despedida
+  steps:
+  - intent: despedir
+  - action: utter_despedida
+
+- rule: Consultar vuelo
+  steps:
+  - intent: consultar_vuelo
+  - action: utter_consultar_vuelo
+
+- rule: Consultar puerta de embarque
+  steps:
+  - intent: consultar_puerta
+  - action: utter_consultar_puerta
+
+- rule: Hacer check-in
+  steps:
+  - intent: hacer_checkin
+  - action: utter_hacer_checkin
+
+- rule: Solicitar ticket
+  steps:
+  - intent: solicitar_ticket
+  - action: utter_solicitar_ticket
+
+- rule: Solicitar factura
+  steps:
+  - intent: solicitar_factura
+  - action: utter_solicitar_factura
+
+- rule: Cambiar vuelo
+  steps:
+  - intent: cambiar_vuelo
+  - action: utter_cambiar_vuelo
+
+- rule: Solicitar reembolso
+  steps:
+  - intent: solicitar_reembolso
+  - action: utter_solicitar_reembolso
+
+- rule: Políticas de equipaje
+  steps:
+  - intent: politicas_equipaje
+  - action: utter_politicas_equipaje
+
+- rule: Rastrear equipaje
+  steps:
+  - intent: rastrear_equipaje
+  - action: utter_rastrear_equipaje
+
+- rule: Pérdida de equipaje
+  steps:
+  - intent: perdida_equipaje
+  - action: utter_perdida_equipaje
+
+- rule: Viajar con mascota
+  steps:
+  - intent: viajar_mascota
+  - action: utter_viajar_mascota
+
+- rule: Consultar destinos
+  steps:
+  - intent: consultar_destinos
+  - action: utter_consultar_destinos
+
+- rule: Consultar promociones
+  steps:
+  - intent: consultar_promociones
+  - action: utter_consultar_promociones
+
+- rule: Contactar soporte
+  steps:
+  - intent: contacto_soporte
+  - action: utter_contacto_soporte
+
+- rule: Responder por defecto
+  steps:
+  - intent: nlu_fallback
+  - action: utter_default

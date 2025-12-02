@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  rasa:
+    build: ./rasa
+    ports:
+      - "5005:5005"
+    volumes:
+      - ./rasa:/app
+    command: run --enable-api --cors "*" --debug
+    networks:
+      - boa-network
+
+  nextjs:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - RASA_API_URL=http://rasa:5005/webhooks/rest/webhook
+    depends_on:
+      - rasa
+    networks:
+      - boa-network
+
+networks:
+  boa-network:
+    driver: bridge
