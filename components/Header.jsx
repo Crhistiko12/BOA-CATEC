@@ -3,9 +3,12 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useSession, signOut } from 'next-auth/react'
+import { User, LogOut, LayoutDashboard, Plane } from 'lucide-react'
 
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const { data: session, status } = useSession()
 
     const navigation = [
         { name: 'Inicio', href: '/' },
@@ -42,9 +45,36 @@ export default function Header() {
                                 {item.name}
                             </Link>
                         ))}
-                        <Link href="/mi-cuenta" className="ml-4 btn-primary">
-                            Mi Cuenta
-                        </Link>
+
+                        {status === 'authenticated' ? (
+                            <div className="relative ml-4 group">
+                                <button className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-blue-50 text-boa-blue hover:bg-blue-100 transition-colors">
+                                    <User className="w-5 h-5" />
+                                    <span className="font-medium">Hola, {session.user.name?.split(' ')[0]}</span>
+                                </button>
+                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right">
+                                    <Link href="/dashboard" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <LayoutDashboard className="w-4 h-4 mr-2" />
+                                        Dashboard
+                                    </Link>
+                                    <Link href="/my-bookings" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <Plane className="w-4 h-4 mr-2" />
+                                        Mis Viajes
+                                    </Link>
+                                    <button
+                                        onClick={() => signOut()}
+                                        className="flex w-full items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                                    >
+                                        <LogOut className="w-4 h-4 mr-2" />
+                                        Cerrar Sesión
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <Link href="/login" className="ml-4 btn-primary">
+                                Iniciar Sesión
+                            </Link>
+                        )}
                     </div>
 
                     {/* Mobile menu button */}
@@ -89,13 +119,34 @@ export default function Header() {
                                         {item.name}
                                     </Link>
                                 ))}
-                                <Link
-                                    href="/mi-cuenta"
-                                    className="block w-full mt-4 text-center btn-primary"
-                                    onClick={() => setMobileMenuOpen(false)}
-                                >
-                                    Mi Cuenta
-                                </Link>
+                                {status === 'authenticated' ? (
+                                    <>
+                                        <Link
+                                            href="/dashboard"
+                                            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-boa-blue hover:bg-blue-50"
+                                            onClick={() => setMobileMenuOpen(false)}
+                                        >
+                                            Dashboard
+                                        </Link>
+                                        <button
+                                            onClick={() => {
+                                                signOut()
+                                                setMobileMenuOpen(false)
+                                            }}
+                                            className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-50"
+                                        >
+                                            Cerrar Sesión
+                                        </button>
+                                    </>
+                                ) : (
+                                    <Link
+                                        href="/login"
+                                        className="block w-full mt-4 text-center btn-primary"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                    >
+                                        Iniciar Sesión
+                                    </Link>
+                                )}
                             </div>
                         </motion.div>
                     )}
