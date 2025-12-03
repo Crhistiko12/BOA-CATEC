@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 
 export default function Promotions() {
     const [timeLeft, setTimeLeft] = useState({
@@ -37,6 +38,8 @@ export default function Promotions() {
             description: 'Viaja ida y vuelta por solo $350',
             validUntil: 'Válido hasta fin de mes',
             color: 'from-blue-600 to-blue-800',
+            route: '/vuelos?origin=LPB&destination=VVI',
+            image: '✈️'
         },
         {
             title: 'Promoción Cochabamba',
@@ -44,6 +47,8 @@ export default function Promotions() {
             description: 'Descuento en vuelos nacionales',
             validUntil: 'Cupos limitados',
             color: 'from-yellow-500 to-orange-600',
+            route: '/vuelos',
+            image: '🎫'
         },
         {
             title: 'Vuelos Internacionales',
@@ -51,6 +56,8 @@ export default function Promotions() {
             description: 'Buenos Aires, Lima, São Paulo',
             validUntil: 'Reserva antes del domingo',
             color: 'from-purple-600 to-indigo-700',
+            route: '/destinos',
+            image: '🌎'
         },
     ]
 
@@ -99,7 +106,10 @@ export default function Promotions() {
                         whileHover={{ y: -10 }}
                     >
                         <div className="card overflow-hidden h-full">
-                            <div className={`bg-gradient-to-r ${promo.color} p-6 text-white`}>
+                            <div className={`bg-gradient-to-r ${promo.color} p-6 text-white relative`}>
+                                <div className="absolute top-4 right-4 text-6xl opacity-20">
+                                    {promo.image}
+                                </div>
                                 <div className="inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-bold mb-4">
                                     {promo.discount}
                                 </div>
@@ -113,9 +123,11 @@ export default function Promotions() {
                                     </svg>
                                     <span className="text-sm">{promo.validUntil}</span>
                                 </div>
-                                <button className="w-full btn-primary">
-                                    Reservar ahora
-                                </button>
+                                <Link href={promo.route}>
+                                    <button className="w-full btn-primary">
+                                        Reservar ahora
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                     </motion.div>

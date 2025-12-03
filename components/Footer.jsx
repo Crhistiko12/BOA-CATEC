@@ -44,7 +44,7 @@ export default function Footer() {
                             <li><Link href="/vuelos" className="hover:text-boa-yellow transition-colors">Reservar vuelo</Link></li>
                             <li><Link href="/checkin" className="hover:text-boa-yellow transition-colors">Check-in online</Link></li>
                             <li><Link href="/informacion" className="hover:text-boa-yellow transition-colors">Estado de vuelos</Link></li>
-                            <li><Link href="/destinos/la-paz" className="hover:text-boa-yellow transition-colors">Destinos</Link></li>
+                            <li><Link href="/destinos" className="hover:text-boa-yellow transition-colors">Destinos</Link></li>
                         </ul>
                     </div>
 
@@ -52,10 +52,10 @@ export default function Footer() {
                     <div>
                         <h3 className="font-bold text-lg mb-4">Atención al Cliente</h3>
                         <ul className="space-y-2 text-gray-400">
-                            <li><Link href="/informacion" className="hover:text-boa-yellow transition-colors">Centro de ayuda</Link></li>
-                            <li><Link href="/informacion" className="hover:text-boa-yellow transition-colors">Equipaje</Link></li>
+                            <li><Link href="/support" className="hover:text-boa-yellow transition-colors">Centro de ayuda</Link></li>
+                            <li><Link href="/my-baggage" className="hover:text-boa-yellow transition-colors">Equipaje</Link></li>
                             <li><Link href="/informacion" className="hover:text-boa-yellow transition-colors">Políticas</Link></li>
-                            <li><Link href="/informacion" className="hover:text-boa-yellow transition-colors">Contacto</Link></li>
+                            <li><Link href="/support" className="hover:text-boa-yellow transition-colors">Contacto</Link></li>
                         </ul>
                     </div>
 

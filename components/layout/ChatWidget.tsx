@@ -82,14 +82,14 @@ export default function ChatWidget() {
             {!isOpen && (
                 <button
                     onClick={() => setIsOpen(true)}
-                    className="fixed bottom-6 right-6 bg-[#1E3A8A] text-white p-4 rounded-full shadow-lg hover:bg-blue-800 transition-all z-50"
+                    className="fixed bottom-6 right-6 bg-[#1E3A8A] text-white p-4 rounded-full shadow-lg hover:bg-blue-800 transition-all z-[9999]"
                 >
                     <MessageCircle className="h-6 w-6" />
                 </button>
             )}
 
             {isOpen && (
-                <div className="fixed bottom-6 right-6 w-96 h-[600px] bg-white rounded-lg shadow-2xl flex flex-col z-50">
+                <div className="fixed bottom-6 right-6 w-96 h-[600px] bg-white rounded-lg shadow-2xl flex flex-col z-[9999]">
                     <div className="bg-[#1E3A8A] text-white p-4 rounded-t-lg flex justify-between items-center">
                         <h3 className="font-bold">Asistente BOA</h3>
                         <button onClick={() => setIsOpen(false)}>

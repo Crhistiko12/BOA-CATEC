@@ -1,0 +1,97 @@
+version: "3.1"
+
+intents:
+  - saludar
+  - despedir
+  - consultar_vuelo
+  - hacer_checkin
+  - solicitar_reembolso
+  - politicas_equipaje
+  - perdida_equipaje
+  - viajar_mascota
+  - contacto_soporte
+  - ask_suggestions
+  - ask_walkthrough
+  - agent_handoff
+  - nlu_fallback
+
+entities:
+  - flight_number
+
+responses:
+  utter_saludo:
+  - text: "¡Hola! Soy el asistente virtual de BOA. ✈️ ¿En qué puedo ayudarte hoy?"
+  - text: "¡Bienvenido a Boliviana de Aviación! Estoy aquí para asistirte con tus vuelos, equipaje o dudas generales. ¿Por dónde empezamos?"
+  - text: "¡Hola! Qué gusto saludarte. Soy tu copiloto virtual 🤖. ¿Qué necesitas saber para tu próximo viaje?"
+  - text: "¡Buenos días/tardes! Bienvenido al servicio digital de BOA. ¿En qué puedo serte útil?"
+
+  utter_despedida:
+  - text: "¡Hasta luego! Que tengas un excelente vuelo con BOA."
+  - text: "Gracias por contactarte. ¡Buen viaje!"
+
+  utter_consultar_vuelo:
+  - text: "Para ver el estado de tu vuelo en tiempo real, necesito tu número de vuelo (ej: OB-760). 🕒 También puedes verlo directamente en nuestra sección de **Estado de Vuelo**."
+  - text: "¡Claro! Puedo ayudarte con eso. Por favor indícame el número de vuelo o ruta. Recuerda que también puedes consultar nuestra página `/flight-status` para información en vivo."
+  - text: "Entendido. Para darte información precisa, ¿podrías decirme tu código de reserva o número de vuelo? 🎫"
+
+  utter_hacer_checkin:
+  - text: "Puedes hacer check-in desde nuestra app móvil o en el sitio web hasta 24 horas antes del vuelo. Visita la sección Check-in Online en la página principal. ¿Necesitas ayuda con el proceso?"
+
+  utter_solicitar_reembolso:
+  - text: "Los reembolsos se pueden solicitar desde tu panel de usuario en la sección 'Reembolsos'. El proceso tarda aproximadamente 15 días hábiles. ¿Necesitas ayuda con algún caso específico?"
+
+  utter_politicas_equipaje:
+  - text: "En BOA, el equipaje permitido es: 23kg en bodega y 8kg en cabina por pasajero. Para equipaje adicional, se aplican cargos según la ruta. Puedes consultar más detalles en la sección 'Mi Equipaje'. ¿Viajas con algo especial?"
+
+  utter_perdida_equipaje:
+  - text: "Lamentamos que hayas perdido tu equipaje. Por favor, dirígete al mostrador de equipaje perdido en el aeropuerto o contáctanos al +591 800 10 3000 con tu número de reserva. También puedes crear un ticket de soporte desde tu dashboard."
+
+  utter_viajar_mascota:
+  - text: "Para viajar con mascotas, necesitas: 1) Certificado de salud vigente, 2) Transportín aprobado, 3) Reserva previa. Las mascotas pequeñas (hasta 8kg) viajan en cabina. ¿Tienes alguna pregunta específica?"
+
+  utter_contacto_soporte:
+  - text: "Estamos para ayudarte 24/7. 🕒 Puedes contactarnos por:\n\n📞 **Call Center**: 901 105 105\n💬 **WhatsApp**: +591 70000000\n📧 **Email**: info@boa.bo\n\nO si prefieres, crea un ticket en `/support`."
+  - text: "Si necesitas atención personalizada, nuestros agentes están listos. 👨‍💻\n\n- Llámanos al **901 105 105**\n- Escríbenos al **WhatsApp** (botón verde)\n- Visita nuestras oficinas\n\n¿Te gustaría que te transfiera con un agente ahora?"
+  - text: "¡Claro! Tienes varias opciones para hablar con nosotros: Call Center, WhatsApp o Email. También puedes visitar nuestra página de `/contact` para ver horarios y oficinas."
+
+  utter_suggestions:
+  - text: |
+      📌 **Sugerencias más importantes:**
+      
+      1. ✈️ **Estado de vuelo**: Consulta el estado de tu vuelo en tiempo real
+      2. 🎫 **Check-in online**: Ahorra tiempo haciendo check-in desde casa
+      3. 📦 **Equipaje**: Conoce las políticas y rastrea tu equipaje
+      4. 🔄 **Cambios y reembolsos**: Modifica tu reserva o solicita reembolso
+      5. 🐾 **Viajar con mascotas**: Requisitos y procedimientos
+      6. 📍 **Destinos**: Explora todos nuestros destinos disponibles
+      7. 💬 **Soporte 24/7**: Contacta con nuestro equipo
+      8. 🌐 **Información**: Consulta horarios, puertas y más
+      
+      ¿Con cuál de estas opciones te gustaría que te ayude?
+
+  utter_walkthrough:
+  - text: |
+      🚀 **Bienvenido al Tour de BOA Digital**
+      
+      Aquí tienes todo lo que puedes hacer en nuestra plataforma:
+      
+      1. **💰 Ofertas Exclusivas**: Visita `/ofertas` para ver promociones con hasta 30% de descuento.
+      2. **✈️ Estado de Vuelo**: En `/flight-status` puedes ver dónde está tu avión en tiempo real.
+      3. **💵 Compensaciones**: Si tu vuelo se demora, solicita tu compensación en `/compensation`.
+      4. **💺 Flota y Servicios**: Conoce nuestros aviones nuevos en `/fleet` y el menú a bordo en `/onboard-services`.
+      5. **🗺️ Mapa de Rutas**: Explora nuestros destinos en `/route-map`.
+      6. **🎫 Soporte Total**: Crea tickets en `/support` o contáctanos por WhatsApp.
+      
+      ¿Te gustaría profundizar en alguna de estas secciones?
+
+  utter_agent_handoff:
+  - text: "Entiendo que necesitas hablar con un agente humano. 👨‍💻\n\nPor favor, aguarda un momento mientras conectamos con un operador disponible. El tiempo de espera estimado es de 2 minutos.\n\nMientras tanto, ¿hay algo más en lo que pueda ir adelantando?"
+
+  utter_default:
+  - text: "Mmm, no estoy seguro de haber entendido eso. 🤔 ¿Podrías intentar preguntarlo de otra forma? Puedo ayudarte con vuelos, equipaje, mascotas o check-in."
+  - text: "Disculpa, aún estoy aprendiendo y esa frase no la capté bien. ¿Te refieres a consultar un vuelo o quizás a políticas de equipaje?"
+  - text: "Lo siento, no tengo información sobre eso específicamente. Pero si necesitas ayuda urgente, escribe 'hablar con agente' para que te pase con un humano. 👨‍💻"
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

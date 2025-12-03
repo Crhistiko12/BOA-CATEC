@@ -1,13 +1,19 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
 
 export default function CheckInWidget() {
     const { register, handleSubmit, formState: { errors } } = useForm()
+    const router = useRouter()
 
     const onSubmit = (data) => {
-        console.log('Check-in data:', data)
-        // Aquí iría la lógica de check-in
+        // Navigate to checkin page with booking reference and last name
+        const params = new URLSearchParams({
+            code: data.bookingRef.toUpperCase(),
+            lastName: data.lastName
+        })
+        router.push(`/checkin?${params.toString()}`)
     }
 
     return (

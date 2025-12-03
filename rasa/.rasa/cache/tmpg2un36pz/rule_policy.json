@@ -1,0 +1,38 @@
+{
+  "lookup": {
+    "rules": {
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"despedir\"}}]": "utter_despedida",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"despedir\"}}, {\"prev_action\": {\"action_name\": \"utter_despedida\"}, \"user\": {\"intent\": \"despedir\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"saludar\"}}]": "utter_saludo",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"saludar\"}}, {\"prev_action\": {\"action_name\": \"utter_saludo\"}, \"user\": {\"intent\": \"saludar\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"consultar_vuelo\"}}]": "utter_consultar_vuelo",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"consultar_vuelo\"}}, {\"prev_action\": {\"action_name\": \"utter_consultar_vuelo\"}, \"user\": {\"intent\": \"consultar_vuelo\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_suggestions\"}}]": "utter_suggestions",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_suggestions\"}}, {\"prev_action\": {\"action_name\": \"utter_suggestions\"}, \"user\": {\"intent\": \"ask_suggestions\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"perdida_equipaje\"}}]": "utter_perdida_equipaje",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"perdida_equipaje\"}}, {\"prev_action\": {\"action_name\": \"utter_perdida_equipaje\"}, \"user\": {\"intent\": \"perdida_equipaje\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"hacer_checkin\"}}]": "utter_hacer_checkin",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"hacer_checkin\"}}, {\"prev_action\": {\"action_name\": \"utter_hacer_checkin\"}, \"user\": {\"intent\": \"hacer_checkin\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"solicitar_reembolso\"}}]": "utter_solicitar_reembolso",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"solicitar_reembolso\"}}, {\"prev_action\": {\"action_name\": \"utter_solicitar_reembolso\"}, \"user\": {\"intent\": \"solicitar_reembolso\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"politicas_equipaje\"}}]": "utter_politicas_equipaje",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"politicas_equipaje\"}}, {\"prev_action\": {\"action_name\": \"utter_politicas_equipaje\"}, \"user\": {\"intent\": \"politicas_equipaje\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"contacto_soporte\"}}]": "utter_contacto_soporte",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"contacto_soporte\"}}, {\"prev_action\": {\"action_name\": \"utter_contacto_soporte\"}, \"user\": {\"intent\": \"contacto_soporte\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"viajar_mascota\"}}]": "utter_viajar_mascota",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"viajar_mascota\"}}, {\"prev_action\": {\"action_name\": \"utter_viajar_mascota\"}, \"user\": {\"intent\": \"viajar_mascota\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nlu_fallback\"}}]": "utter_default",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nlu_fallback\"}}, {\"prev_action\": {\"action_name\": \"utter_default\"}, \"user\": {\"intent\": \"nlu_fallback\"}}]": "action_listen"
+    },
+    "rule_only_slots": [],
+    "rule_only_loops": [],
+    "rules_for_loop_unhappy_path": {},
+    "rules_not_in_stories": [
+      "predicting default action with intent session_start",
+      "predicting default action with intent restart",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nlu_fallback\"}}, {\"prev_action\": {\"action_name\": \"utter_default\"}, \"user\": {\"intent\": \"nlu_fallback\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nlu_fallback\"}}]",
+      "predicting default action with intent back"
+    ]
+  }
+}

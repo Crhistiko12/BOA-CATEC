@@ -1,0 +1,57 @@
+version: "3.1"
+
+stories:
+- story: saludo y sugerencias
+  steps:
+  - intent: saludar
+  - action: utter_saludo
+  - intent: ask_suggestions
+  - action: utter_suggestions
+
+- story: consulta de vuelo
+  steps:
+  - intent: saludar
+  - action: utter_saludo
+  - intent: consultar_vuelo
+  - action: utter_consultar_vuelo
+
+- story: hacer check-in
+  steps:
+  - intent: hacer_checkin
+  - action: utter_hacer_checkin
+
+- story: equipaje y despedida
+  steps:
+  - intent: politicas_equipaje
+  - action: utter_politicas_equipaje
+  - intent: despedir
+  - action: utter_despedida
+
+- story: mascota y más info
+  steps:
+  - intent: viajar_mascota
+  - action: utter_viajar_mascota
+  - intent: contacto_soporte
+  - action: utter_contacto_soporte
+
+- story: reembolso
+  steps:
+  - intent: solicitar_reembolso
+  - action: utter_solicitar_reembolso
+
+- story: equipaje perdido
+  steps:
+  - intent: perdida_equipaje
+  - action: utter_perdida_equipaje
+  - intent: contacto_soporte
+  - action: utter_contacto_soporte
+
+- story: walkthrough request
+  steps:
+  - intent: ask_walkthrough
+  - action: utter_walkthrough
+
+- story: agent handoff request
+  steps:
+  - intent: agent_handoff
+  - action: utter_agent_handoff

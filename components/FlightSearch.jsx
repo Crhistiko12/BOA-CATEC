@@ -2,10 +2,12 @@
 
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
 
 export default function FlightSearch() {
     const [tripType, setTripType] = useState('roundtrip')
     const { register, handleSubmit, formState: { errors } } = useForm()
+    const router = useRouter()
 
     const cities = [
         { code: 'LPB', name: 'La Paz' },
@@ -17,8 +19,19 @@ export default function FlightSearch() {
     ]
 
     const onSubmit = (data) => {
-        console.log('Búsqueda de vuelo:', data)
-        // Aquí iría la lógica para buscar vuelos
+        // Build query string with search parameters
+        const params = new URLSearchParams({
+            origin: data.origin,
+            destination: data.destination,
+            departureDate: data.departureDate,
+            ...(tripType === 'roundtrip' && data.returnDate && { returnDate: data.returnDate }),
+            passengers: data.passengers || '1',
+            class: data.class || 'economy',
+            tripType: tripType
+        })
+
+        // Navigate to vuelos page with parameters
+        router.push(`/vuelos?${params.toString()}`)
     }
 
     return (
@@ -30,8 +43,8 @@ export default function FlightSearch() {
                         type="button"
                         onClick={() => setTripType('roundtrip')}
                         className={`flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-200 ${tripType === 'roundtrip'
-                                ? 'bg-boa-blue text-white shadow-lg'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            ? 'bg-boa-blue text-white shadow-lg'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                             }`}
                     >
                         Ida y vuelta
@@ -40,8 +53,8 @@ export default function FlightSearch() {
                         type="button"
                         onClick={() => setTripType('oneway')}
                         className={`flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-200 ${tripType === 'oneway'
-                                ? 'bg-boa-blue text-white shadow-lg'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            ? 'bg-boa-blue text-white shadow-lg'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                             }`}
                     >
                         Solo ida

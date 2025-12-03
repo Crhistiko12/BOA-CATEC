@@ -1,0 +1,57 @@
+version: "3.1"
+
+rules:
+- rule: Saludo
+  steps:
+  - intent: saludar
+  - action: utter_saludo
+
+- rule: Despedida
+  steps:
+  - intent: despedir
+  - action: utter_despedida
+
+- rule: Consultar vuelo
+  steps:
+  - intent: consultar_vuelo
+  - action: utter_consultar_vuelo
+
+- rule: Hacer check-in
+  steps:
+  - intent: hacer_checkin
+  - action: utter_hacer_checkin
+
+- rule: Solicitar reembolso
+  steps:
+  - intent: solicitar_reembolso
+  - action: utter_solicitar_reembolso
+
+- rule: Políticas de equipaje
+  steps:
+  - intent: politicas_equipaje
+  - action: utter_politicas_equipaje
+
+- rule: Pérdida de equipaje
+  steps:
+  - intent: perdida_equipaje
+  - action: utter_perdida_equipaje
+
+- rule: Viajar con mascota
+  steps:
+  - intent: viajar_mascota
+  - action: utter_viajar_mascota
+
+- rule: Contactar soporte
+  steps:
+  - intent: contacto_soporte
+  - action: utter_contacto_soporte
+
+- rule: Pedir sugerencias
+  steps:
+  - intent: ask_suggestions
+  - action: utter_suggestions
+
+- rule: Responder por defecto
+  steps:
+  - intent: nlu_fallback
+  - action: utter_default

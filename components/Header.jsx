@@ -12,7 +12,7 @@ export default function Header() {
 
     const navigation = [
         { name: 'Inicio', href: '/' },
-        { name: 'Destinos', href: '/destinos/la-paz' },
+        { name: 'Destinos', href: '/destinos' },
         { name: 'Reservas', href: '/vuelos' },
         { name: 'Check-in', href: '/checkin' },
         { name: 'Info Vuelos', href: '/informacion' },
