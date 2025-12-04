@@ -1,152 +1,260 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
+import { hash } from 'bcryptjs';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 async function main() {
-    console.log('🌱 Starting database seed...')
+  console.log('🌱 Starting seed...');
 
-    // Create test user
-    const user = await prisma.user.upsert({
-        where: { email: 'diego.test@boa.bo' },
-        update: {},
-        create: {
-            email: 'diego.test@boa.bo',
-            password: 'password123', // Plain text for demo - in production use bcrypt
-            name: 'Diego Programador',
-            role: 'USER',
-        },
-    })
+  // 1. Clean DB
+  try {
+    await prisma.supportTicket.deleteMany();
+    await prisma.ticket.deleteMany();
+    await prisma.passenger.deleteMany();
+    await prisma.payment.deleteMany();
+    await prisma.refundRequest.deleteMany();
+    await prisma.baggage.deleteMany();
+    await prisma.booking.deleteMany();
+    await prisma.flight.deleteMany();
+    await prisma.destination.deleteMany();
+    await prisma.user.deleteMany();
+  } catch (e) {
+    console.log('⚠️ Error cleaning DB (might be empty):', e);
+  }
 
-    console.log('✅ Created user:', user.email)
+  // 2. Create Users
+  const password = await hash('password123', 12);
+  const adminPassword = await hash('admin123', 12);
 
-    // Create flights
-    const flight1 = await prisma.flight.upsert({
-        where: { flightNumber: 'OB-760' },
-        update: {},
-        create: {
-            flightNumber: 'OB-760',
-            origin: 'Santa Cruz (VVI)',
-            destination: 'Miami (MIA)',
-            departureTime: new Date('2025-12-15T22:00:00'),
-            arrivalTime: new Date('2025-12-16T06:30:00'),
-            price: 450.00,
-            capacity: 180,
-        },
-    })
+  const user = await prisma.user.create({
+    data: {
+      email: 'test@demo.com',
+      name: 'Diego Demo',
+      password,
+      role: 'USER',
+    },
+  });
+  console.log('👤 User created:', user.email);
 
-    const flight2 = await prisma.flight.upsert({
-        where: { flightNumber: 'OB-123' },
-        update: {},
-        create: {
-            flightNumber: 'OB-123',
-            origin: 'La Paz (LPB)',
-            destination: 'Buenos Aires (EZE)',
-            departureTime: new Date('2025-12-20T14:00:00'),
-            arrivalTime: new Date('2025-12-20T18:00:00'),
-            price: 320.00,
-            capacity: 150,
-        },
-    })
+  const admin = await prisma.user.create({
+    data: {
+      email: 'admin@boa.bo',
+      name: 'Admin BOA',
+      password: adminPassword,
+      role: 'ADMIN',
+    },
+  });
+  console.log('👨‍💼 Admin created:', admin.email);
 
-    console.log('✅ Created flights:', flight1.flightNumber, flight2.flightNumber)
+  // 3. Create Destinations
+  const destinations = [
+    { code: 'LPB', name: 'La Paz', country: 'Bolivia', description: 'La ciudad maravilla situada a más de 3,600 metros de altura', imageUrl: 'https://images.unsplash.com/photo-1588611910602-0941e7c536e4?q=80&w=1000&auto=format&fit=crop', popular: true },
+    { code: 'VVI', name: 'Santa Cruz', country: 'Bolivia', description: 'Tierra de oportunidades y centro económico de Bolivia', imageUrl: 'https://images.unsplash.com/photo-1598396006622-446757530699?q=80&w=1000&auto=format&fit=crop', popular: true },
+    { code: 'CBB', name: 'Cochabamba', country: 'Bolivia', description: 'Corazón gastronómico y ciudad de la eterna primavera', imageUrl: 'https://images.unsplash.com/photo-1569388330292-7a6a84176db9?q=80&w=1000&auto=format&fit=crop', popular: true },
+    { code: 'MIA', name: 'Miami', country: 'USA', description: 'Playas paradisíacas y destino de compras', imageUrl: 'https://images.unsplash.com/photo-1535498730771-e735b998cd64?q=80&w=1000&auto=format&fit=crop', popular: true },
+    { code: 'MAD', name: 'Madrid', country: 'España', description: 'Puerta de Europa con historia y cultura', imageUrl: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?q=80&w=1000&auto=format&fit=crop', popular: true },
+    { code: 'EZE', name: 'Buenos Aires', country: 'Argentina', description: 'París de Sudamérica', imageUrl: 'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?q=80&w=1000&auto=format&fit=crop', popular: false },
+    { code: 'LIM', name: 'Lima', country: 'Perú', description: 'Capital gastronómica de América', imageUrl: 'https://images.unsplash.com/photo-1531968455001-5c5272a41129?q=80&w=1000&auto=format&fit=crop', popular: false },
+    { code: 'SCL', name: 'Santiago', country: 'Chile', description: 'Moderna ciudad rodeada de montañas', imageUrl: 'https://images.unsplash.com/photo-1555365634-c8f9c4aae1b5?q=80&w=1000&auto=format&fit=crop', popular: false },
+  ];
 
-    // Create booking with complete data
+  for (const dest of destinations) {
+    await prisma.destination.create({ data: dest });
+  }
+  console.log('🌍 Destinations created');
+
+  // 4. Create Flights (Minimum 6 available)
+  const today = new Date();
+
+  // Helper function to create date with specific time
+  const createDate = (daysFromNow: number, hours: number, minutes: number = 0) => {
+    const date = new Date(today);
+    date.setDate(date.getDate() + daysFromNow);
+    date.setHours(hours, minutes, 0, 0);
+    return date;
+  };
+
+  const flights = [
+    // Vuelos Nacionales
+    {
+      flightNumber: 'OB-101',
+      origin: 'LPB',
+      destination: 'VVI',
+      departureTime: createDate(1, 8, 30),
+      arrivalTime: createDate(1, 9, 30),
+      price: 85.00,
+      capacity: 150,
+      availableSeats: 120,
+      status: 'SCHEDULED',
+    },
+    {
+      flightNumber: 'OB-102',
+      origin: 'VVI',
+      destination: 'LPB',
+      departureTime: createDate(1, 14, 0),
+      arrivalTime: createDate(1, 15, 0),
+      price: 85.00,
+      capacity: 150,
+      availableSeats: 95,
+      status: 'SCHEDULED',
+    },
+    {
+      flightNumber: 'OB-201',
+      origin: 'LPB',
+      destination: 'CBB',
+      departureTime: createDate(2, 10, 0),
+      arrivalTime: createDate(2, 10, 45),
+      price: 65.00,
+      capacity: 120,
+      availableSeats: 80,
+      status: 'SCHEDULED',
+    },
+    {
+      flightNumber: 'OB-202',
+      origin: 'CBB',
+      destination: 'VVI',
+      departureTime: createDate(2, 16, 30),
+      arrivalTime: createDate(2, 17, 15),
+      price: 70.00,
+      capacity: 120,
+      availableSeats: 100,
+      status: 'SCHEDULED',
+    },
+
+    // Vuelos Internacionales
+    {
+      flightNumber: 'OB-760',
+      origin: 'VVI',
+      destination: 'MIA',
+      departureTime: createDate(5, 22, 0),
+      arrivalTime: createDate(6, 5, 0),
+      price: 450.00,
+      capacity: 200,
+      availableSeats: 150,
+      status: 'SCHEDULED',
+    },
+    {
+      flightNumber: 'OB-761',
+      origin: 'MIA',
+      destination: 'VVI',
+      departureTime: createDate(12, 23, 30),
+      arrivalTime: createDate(13, 6, 30),
+      price: 420.00,
+      capacity: 200,
+      availableSeats: 180,
+      status: 'SCHEDULED',
+    },
+    {
+      flightNumber: 'OB-800',
+      origin: 'LPB',
+      destination: 'MAD',
+      departureTime: createDate(7, 20, 0),
+      arrivalTime: createDate(8, 13, 0),
+      price: 850.00,
+      capacity: 280,
+      availableSeats: 220,
+      status: 'SCHEDULED',
+    },
+    {
+      flightNumber: 'OB-801',
+      origin: 'MAD',
+      destination: 'LPB',
+      departureTime: createDate(14, 18, 0),
+      arrivalTime: createDate(15, 7, 0),
+      price: 820.00,
+      capacity: 280,
+      availableSeats: 200,
+      status: 'SCHEDULED',
+    },
+    {
+      flightNumber: 'OB-300',
+      origin: 'VVI',
+      destination: 'EZE',
+      departureTime: createDate(3, 11, 0),
+      arrivalTime: createDate(3, 14, 30),
+      price: 280.00,
+      capacity: 180,
+      availableSeats: 140,
+      status: 'SCHEDULED',
+    },
+    {
+      flightNumber: 'OB-400',
+      origin: 'LPB',
+      destination: 'LIM',
+      departureTime: createDate(4, 9, 0),
+      arrivalTime: createDate(4, 11, 30),
+      price: 220.00,
+      capacity: 160,
+      availableSeats: 130,
+      status: 'SCHEDULED',
+    },
+
+    // Vuelo pasado para historial
+    {
+      flightNumber: 'OB-555',
+      origin: 'VVI',
+      destination: 'LPB',
+      departureTime: createDate(-30, 14, 0),
+      arrivalTime: createDate(-30, 15, 0),
+      price: 75.00,
+      capacity: 150,
+      availableSeats: 0,
+      status: 'LANDED',
+    },
+  ];
+
+  for (const f of flights) {
+    // @ts-ignore
+    await prisma.flight.create({ data: f });
+  }
+  console.log(`✈️ ${flights.length} Flights created`);
+
+  // 5. Create Past Booking (History)
+  const pastFlight = await prisma.flight.findUnique({ where: { flightNumber: 'OB-555' } });
+  if (pastFlight) {
     const booking = await prisma.booking.create({
-        data: {
-            userId: user.id,
-            flightId: flight1.id,
-            status: 'CONFIRMED',
-            totalPrice: 450.00,
-            passengers: {
-                create: [
-                    {
-                        firstName: 'Diego',
-                        lastName: 'Programador',
-                        type: 'ADULT',
-                        seatNumber: '12F',
-                    },
-                ],
-            },
-            baggage: {
-                create: [
-                    {
-                        weight: 20,
-                        dimensions: '60x40x30',
-                        special: false,
-                        description: 'Maleta estándar',
-                        status: 'REGISTERED',
-                        trackingCode: 'BOA-VVI-MIA-001',
-                    },
-                ],
-            },
-            payment: {
-                create: {
-                    stripeId: 'pi_test_123456789',
-                    amount: 450.00,
-                    status: 'succeeded',
-                },
-            },
-        },
-    })
+      data: {
+        userId: user.id,
+        flightId: pastFlight.id,
+        status: 'COMPLETED',
+        totalPrice: 75.00,
+      }
+    });
 
-    console.log('✅ Created booking:', booking.id)
+    const passenger = await prisma.passenger.create({
+      data: {
+        bookingId: booking.id,
+        firstName: 'Diego',
+        lastName: 'Demo',
+        type: 'ADULT',
+        seatNumber: '12A'
+      }
+    });
 
-    // Create a second booking for "Mis Viajes"
-    const booking2 = await prisma.booking.create({
-        data: {
-            userId: user.id,
-            flightId: flight2.id,
-            status: 'CONFIRMED',
-            totalPrice: 320.00,
-            passengers: {
-                create: [
-                    {
-                        firstName: 'Diego',
-                        lastName: 'Programador',
-                        type: 'ADULT',
-                        seatNumber: '8A',
-                    },
-                ],
-            },
-            baggage: {
-                create: [
-                    {
-                        weight: 15,
-                        dimensions: '55x35x25',
-                        special: false,
-                        description: 'Equipaje de mano',
-                        status: 'REGISTERED',
-                        trackingCode: 'BOA-LPB-EZE-002',
-                    },
-                ],
-            },
-            payment: {
-                create: {
-                    stripeId: 'pi_test_987654321',
-                    amount: 320.00,
-                    status: 'succeeded',
-                },
-            },
-        },
-    })
+    await prisma.ticket.create({
+      data: {
+        bookingId: booking.id,
+        passengerId: passenger.id,
+        ticketNumber: '9300000001',
+        seatNumber: '12A',
+        class: 'ECONOMY',
+        status: 'USED',
+      }
+    });
+    console.log('📜 Past booking created');
+  }
 
-    console.log('✅ Created second booking:', booking2.id)
-
-    console.log('\n🎉 Seed completed successfully!')
-    console.log('\n📧 Test User Credentials:')
-    console.log('   Email: diego.test@boa.bo')
-    console.log('   Password: password123')
-    console.log('\n✈️ User has 2 confirmed bookings:')
-    console.log('   1. OB-760: Santa Cruz → Miami (Dec 15)')
-    console.log('   2. OB-123: La Paz → Buenos Aires (Dec 20)')
+  console.log('✅ Seed finished successfully!');
+  console.log('\n📋 Login Credentials:');
+  console.log('   User: test@demo.com / password123');
+  console.log('   Admin: admin@boa.bo / admin123');
 }
 
 main()
-    .then(async () => {
-        await prisma.$disconnect()
-    })
-    .catch(async (e) => {
-        console.error('❌ Error seeding database:', e)
-        await prisma.$disconnect()
-        process.exit(1)
-    })
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

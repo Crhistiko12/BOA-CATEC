@@ -2,12 +2,7 @@ import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
 import db from '@/lib/db';
-// import bcrypt from 'bcrypt'; // En un entorno real, usaríamos bcrypt
-
-// Simulación de hash para este demo
-const saltAndHashPassword = (password: string) => {
-    return password; // NO HACER ESTO EN PRODUCCIÓN
-};
+import { compare } from 'bcryptjs';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
     providers: [
@@ -26,10 +21,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                         const { email, password } = parsedCredentials.data;
                         const user = await db.user.findUnique({ where: { email } });
 
-                        if (!user) return null;
+                        if (!user || !user.password) return null;
 
-                        // En producción: const passwordsMatch = await bcrypt.compare(password, user.password);
-                        const passwordsMatch = password === user.password;
+                        // Use bcrypt to compare passwords
+                        const passwordsMatch = await compare(password, user.password);
 
                         if (passwordsMatch) return user;
                     }

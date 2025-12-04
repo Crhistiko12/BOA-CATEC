@@ -1,5 +1,342 @@
 {
-  "node": {},
+  "node": {
+    "000c087fe7692d39b37ebddfc7da18cf12602de8b0": {
+      "workers": {
+        "app/(dashboard)/dashboard/page": {
+          "moduleId": 4034,
+          "async": false,
+          "exportedName": "getAllDestinations",
+          "filename": "lib/db-actions.ts"
+        },
+        "app/(dashboard)/my-bookings/page": {
+          "moduleId": 28032,
+          "async": false,
+          "exportedName": "getAllDestinations",
+          "filename": "lib/db-actions.ts"
+        },
+        "app/(public)/destinos/page": {
+          "moduleId": 16615,
+          "async": false,
+          "exportedName": "getAllDestinations",
+          "filename": "lib/db-actions.ts"
+        }
+      },
+      "layer": {
+        "app/(dashboard)/dashboard/page": "rsc",
+        "app/(dashboard)/my-bookings/page": "rsc",
+        "app/(public)/destinos/page": "rsc"
+      },
+      "filename": "lib/db-actions.ts",
+      "exportedName": "getAllDestinations"
+    },
+    "0055689a8083d0d8f41fe5108a770f2fe6e5d30a31": {
+      "workers": {
+        "app/(dashboard)/dashboard/page": {
+          "moduleId": 4034,
+          "async": false,
+          "exportedName": "getPopularDestinations",
+          "filename": "lib/db-actions.ts"
+        },
+        "app/(dashboard)/my-bookings/page": {
+          "moduleId": 28032,
+          "async": false,
+          "exportedName": "getPopularDestinations",
+          "filename": "lib/db-actions.ts"
+        },
+        "app/(public)/destinos/page": {
+          "moduleId": 16615,
+          "async": false,
+          "exportedName": "getPopularDestinations",
+          "filename": "lib/db-actions.ts"
+        }
+      },
+      "layer": {
+        "app/(dashboard)/dashboard/page": "rsc",
+        "app/(dashboard)/my-bookings/page": "rsc",
+        "app/(public)/destinos/page": "rsc"
+      },
+      "filename": "lib/db-actions.ts",
+      "exportedName": "getPopularDestinations"
+    },
+    "400e8cd6b9e0f88ab0745dd10c5f3bf55cd11ee61c": {
+      "workers": {
+        "app/(dashboard)/dashboard/page": {
+          "moduleId": 4034,
+          "async": false,
+          "exportedName": "getUserBookings",
+          "filename": "lib/db-actions.ts"
+        },
+        "app/(dashboard)/my-bookings/page": {
+          "moduleId": 28032,
+          "async": false,
+          "exportedName": "getUserBookings",
+          "filename": "lib/db-actions.ts"
+        },
+        "app/(public)/destinos/page": {
+          "moduleId": 16615,
+          "async": false,
+          "exportedName": "getUserBookings",
+          "filename": "lib/db-actions.ts"
+        }
+      },
+      "layer": {
+        "app/(dashboard)/dashboard/page": "rsc",
+        "app/(dashboard)/my-bookings/page": "rsc",
+        "app/(public)/destinos/page": "rsc"
+      },
+      "filename": "lib/db-actions.ts",
+      "exportedName": "getUserBookings"
+    },
+    "40696d1bcc1aafa3aea801eee0344cbfc09a1dca7d": {
+      "workers": {
+        "app/(dashboard)/dashboard/page": {
+          "moduleId": 4034,
+          "async": false,
+          "exportedName": "getUserNextFlight",
+          "filename": "lib/db-actions.ts"
+        },
+        "app/(dashboard)/my-bookings/page": {
+          "moduleId": 28032,
+          "async": false,
+          "exportedName": "getUserNextFlight",
+          "filename": "lib/db-actions.ts"
+        },
+        "app/(public)/destinos/page": {
+          "moduleId": 16615,
+          "async": false,
+          "exportedName": "getUserNextFlight",
+          "filename": "lib/db-actions.ts"
+        }
+      },
+      "layer": {
+        "app/(dashboard)/dashboard/page": "rsc",
+        "app/(dashboard)/my-bookings/page": "rsc",
+        "app/(public)/destinos/page": "rsc"
+      },
+      "filename": "lib/db-actions.ts",
+      "exportedName": "getUserNextFlight"
+    },
+    "407eb234c04598dc38a90fa5384226ea4a92d61952": {
+      "workers": {
+        "app/(dashboard)/dashboard/page": {
+          "moduleId": 4034,
+          "async": false,
+          "exportedName": "getBookingDetails",
+          "filename": "lib/db-actions.ts"
+        },
+        "app/(dashboard)/my-bookings/page": {
+          "moduleId": 28032,
+          "async": false,
+          "exportedName": "getBookingDetails",
+          "filename": "lib/db-actions.ts"
+        },
+        "app/(public)/destinos/page": {
+          "moduleId": 16615,
+          "async": false,
+          "exportedName": "getBookingDetails",
+          "filename": "lib/db-actions.ts"
+        }
+      },
+      "layer": {
+        "app/(dashboard)/dashboard/page": "rsc",
+        "app/(dashboard)/my-bookings/page": "rsc",
+        "app/(public)/destinos/page": "rsc"
+      },
+      "filename": "lib/db-actions.ts",
+      "exportedName": "getBookingDetails"
+    },
+    "70e4957bd5c52ec3bc423c925b463fdb34073ea7fb": {
+      "workers": {
+        "app/(dashboard)/dashboard/page": {
+          "moduleId": 4034,
+          "async": false,
+          "exportedName": "searchFlights",
+          "filename": "lib/db-actions.ts"
+        },
+        "app/(dashboard)/my-bookings/page": {
+          "moduleId": 28032,
+          "async": false,
+          "exportedName": "searchFlights",
+          "filename": "lib/db-actions.ts"
+        },
+        "app/(public)/destinos/page": {
+          "moduleId": 16615,
+          "async": false,
+          "exportedName": "searchFlights",
+          "filename": "lib/db-actions.ts"
+        },
+        "app/(public)/vuelos/page": {
+          "moduleId": 17137,
+          "async": false,
+          "exportedName": "searchFlights",
+          "filename": "lib/db-actions.ts"
+        }
+      },
+      "layer": {
+        "app/(dashboard)/dashboard/page": "rsc",
+        "app/(dashboard)/my-bookings/page": "rsc",
+        "app/(public)/destinos/page": "rsc",
+        "app/(public)/vuelos/page": "action-browser"
+      },
+      "filename": "lib/db-actions.ts",
+      "exportedName": "searchFlights"
+    },
+    "005c58f77cfea4a2908cc818f333e2ab94899ac567": {
+      "workers": {
+        "app/admin/page": {
+          "moduleId": 84895,
+          "async": false,
+          "exportedName": "getAdminStats",
+          "filename": "lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/page": "rsc"
+      },
+      "filename": "lib/admin-actions.ts",
+      "exportedName": "getAdminStats"
+    },
+    "00c73a84ae6744c749737620214b6cc889b3379226": {
+      "workers": {
+        "app/admin/page": {
+          "moduleId": 84895,
+          "async": false,
+          "exportedName": "getAllSupportTickets",
+          "filename": "lib/admin-actions.ts"
+        },
+        "app/admin/tickets/page": {
+          "moduleId": 79410,
+          "async": false,
+          "exportedName": "getAllSupportTickets",
+          "filename": "lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/page": "rsc",
+        "app/admin/tickets/page": "action-browser"
+      },
+      "filename": "lib/admin-actions.ts",
+      "exportedName": "getAllSupportTickets"
+    },
+    "00f95137c5a36c579c0792574a54ca129cc2257a0d": {
+      "workers": {
+        "app/admin/flights/page": {
+          "moduleId": 14975,
+          "async": false,
+          "exportedName": "getAllFlights",
+          "filename": "lib/admin-actions.ts"
+        },
+        "app/admin/page": {
+          "moduleId": 84895,
+          "async": false,
+          "exportedName": "getAllFlights",
+          "filename": "lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/flights/page": "action-browser",
+        "app/admin/page": "rsc"
+      },
+      "filename": "lib/admin-actions.ts",
+      "exportedName": "getAllFlights"
+    },
+    "4051e7e32487dfe00018bd6a6b0fb88302ab5d952b": {
+      "workers": {
+        "app/admin/flights/page": {
+          "moduleId": 14975,
+          "async": false,
+          "exportedName": "deleteFlight",
+          "filename": "lib/admin-actions.ts"
+        },
+        "app/admin/page": {
+          "moduleId": 84895,
+          "async": false,
+          "exportedName": "deleteFlight",
+          "filename": "lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/flights/page": "action-browser",
+        "app/admin/page": "rsc"
+      },
+      "filename": "lib/admin-actions.ts",
+      "exportedName": "deleteFlight"
+    },
+    "40f4ed563df506d35ab837b165eb370cbf7f49ef6b": {
+      "workers": {
+        "app/admin/flights/page": {
+          "moduleId": 14975,
+          "async": false,
+          "exportedName": "createFlight",
+          "filename": "lib/admin-actions.ts"
+        },
+        "app/admin/page": {
+          "moduleId": 84895,
+          "async": false,
+          "exportedName": "createFlight",
+          "filename": "lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/flights/page": "action-browser",
+        "app/admin/page": "rsc"
+      },
+      "filename": "lib/admin-actions.ts",
+      "exportedName": "createFlight"
+    },
+    "60306efa8d403f3ccd38a88992283df1c988d92c27": {
+      "workers": {
+        "app/admin/page": {
+          "moduleId": 84895,
+          "async": false,
+          "exportedName": "updateFlight",
+          "filename": "lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/page": "rsc"
+      },
+      "filename": "lib/admin-actions.ts",
+      "exportedName": "updateFlight"
+    },
+    "60bed9ca19b080ad58dfa23c1823e85590d5e18d32": {
+      "workers": {
+        "app/admin/page": {
+          "moduleId": 84895,
+          "async": false,
+          "exportedName": "updateSupportTicket",
+          "filename": "lib/admin-actions.ts"
+        },
+        "app/admin/tickets/page": {
+          "moduleId": 79410,
+          "async": false,
+          "exportedName": "updateSupportTicket",
+          "filename": "lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/page": "rsc",
+        "app/admin/tickets/page": "action-browser"
+      },
+      "filename": "lib/admin-actions.ts",
+      "exportedName": "updateSupportTicket"
+    },
+    "4070c923eb1e25fa9bf040ff124a41c3e336dbb5cc": {
+      "workers": {
+        "app/checkout/page": {
+          "moduleId": 52976,
+          "async": false,
+          "exportedName": "createBooking",
+          "filename": "lib/booking-actions.ts"
+        }
+      },
+      "layer": {
+        "app/checkout/page": "action-browser"
+      },
+      "filename": "lib/booking-actions.ts",
+      "exportedName": "createBooking"
+    }
+  },
   "edge": {},
-  "encryptionKey": "OF68QsBjHKZvhzuflVSqFT1W4QugLTDgi2gDTmAjkGI="
+  "encryptionKey": "jI5Zkk1CyfzIQVH8dwRM8x39tKLSzj4yGkzs6byF9E4="
 }

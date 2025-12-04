@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client'
+import db from '@/lib/db'
 
-const prisma = new PrismaClient()
+const prisma = db
 
 // URL del servidor Rasa (por defecto localhost:5005)
 const RASA_API_URL = process.env.RASA_API_URL || 'http://localhost:5005/webhooks/rest/webhook'

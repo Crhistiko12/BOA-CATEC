@@ -19,6 +19,26 @@ build/
 .env
 .env*.local
 
+# Python / Rasa (IGNORAR COMPLETAMENTE)
+rasa/
+rasa_config/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+venv/
+env/
+ENV/
+
+# Scripts temporales
+scripts/
+
+# Documentación temporal (solo en artifacts)
+*.md
+!README.md
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

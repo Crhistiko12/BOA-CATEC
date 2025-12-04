@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { Menu, X, Plane, User, LogOut } from 'lucide-react'
+import { Menu, X, Plane, LogOut, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useSession, signOut } from 'next-auth/react'
 import {
@@ -27,66 +27,77 @@ export default function Header() {
     ]
 
     return (
-        <header className="bg-white shadow-sm sticky top-0 z-50">
+        <header className="fixed top-0 left-0 right-0 z-[1000] backdrop-blur-2xl bg-gradient-to-r from-[#0052A5]/30 via-[#003D80]/25 to-purple-900/20 border-b border-white/10 shadow-2xl shadow-black/20">
             <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Top">
-                <div className="flex w-full items-center justify-between border-b border-indigo-500 py-6 lg:border-none">
+                <div className="flex w-full items-center justify-between py-4 lg:py-5">
+                    {/* Logo */}
                     <div className="flex items-center">
                         <Link href="/">
                             <span className="sr-only">BOA - Boliviana de Aviación</span>
-                            <div className="flex items-center gap-2">
-                                <Plane className="h-8 w-8 text-[#1E3A8A]" />
-                                <span className="text-2xl font-bold text-[#1E3A8A]">BOA</span>
+                            <div className="group flex items-center gap-3 px-4 py-2 rounded-xl hover:bg-white/10 backdrop-blur-sm transition-all duration-300">
+                                <div className="p-2 bg-gradient-to-br from-[#FFD600] to-yellow-400 rounded-lg group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-[#FFD600]/30">
+                                    <Plane className="h-6 w-6 text-[#0052A5]" />
+                                </div>
+                                <span className="text-2xl font-black bg-gradient-to-r from-[#FFD600] to-yellow-300 bg-clip-text text-transparent">BOA</span>
                             </div>
                         </Link>
-                        <div className="hidden ml-10 space-x-8 lg:block">
+                        
+                        {/* Desktop Navigation */}
+                        <div className="hidden ml-12 space-x-2 lg:flex items-center">
                             {navigation.map((link) => (
                                 <Link
                                     key={link.name}
                                     href={link.href}
-                                    className="text-base font-medium text-gray-700 hover:text-[#1E3A8A]"
+                                    className="px-4 py-2 rounded-xl text-sm font-semibold text-white/80 hover:text-white hover:bg-white/15 backdrop-blur-md transition-all duration-300 border border-transparent hover:border-white/20"
                                 >
                                     {link.name}
                                 </Link>
                             ))}
                         </div>
                     </div>
-                    <div className="ml-10 space-x-4 hidden lg:flex items-center">
+
+                    {/* Desktop User Menu */}
+                    <div className="ml-10 space-x-3 hidden lg:flex items-center">
                         {session?.user ? (
                             <div className="flex items-center gap-4">
-                                <span className="text-sm font-medium text-[#1E3A8A]">
-                                    Hola, {session.user.name?.split(' ')[0]}
+                                <span className="text-sm font-semibold text-white/70 hidden md:inline">
+                                    {session.user.name?.split(' ')[0]}
                                 </span>
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" className="relative h-10 w-10 rounded-full border border-gray-200">
+                                        <Button variant="ghost" className="relative h-11 w-11 rounded-xl border-2 border-white/20 bg-gradient-to-br from-white/10 to-white/5 hover:from-white/20 hover:to-white/10 shadow-lg transition-all duration-300 hover:border-white/40">
                                             <Avatar className="h-10 w-10">
                                                 <AvatarImage src={session.user.image || ''} alt={session.user.name || ''} />
-                                                <AvatarFallback className="bg-[#1E3A8A] text-white">
+                                                <AvatarFallback className="bg-gradient-to-br from-[#FFD600] to-yellow-400 text-[#0052A5] font-bold text-lg">
                                                     {session.user.name?.charAt(0).toUpperCase() || 'U'}
                                                 </AvatarFallback>
                                             </Avatar>
                                         </Button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent className="w-56" align="end" forceMount>
-                                        <DropdownMenuLabel className="font-normal">
+                                    <DropdownMenuContent className="w-56 bg-white/10 backdrop-blur-2xl border border-white/20 rounded-2xl shadow-2xl shadow-black/40" align="end" forceMount>
+                                        <DropdownMenuLabel className="font-normal px-4 py-3 border-b border-white/10">
                                             <div className="flex flex-col space-y-1">
-                                                <p className="text-sm font-medium leading-none">{session.user.name}</p>
-                                                <p className="text-xs leading-none text-muted-foreground">
+                                                <p className="text-sm font-semibold text-white">{session.user.name}</p>
+                                                <p className="text-xs text-white/60">
                                                     {session.user.email}
                                                 </p>
                                             </div>
                                         </DropdownMenuLabel>
-                                        <DropdownMenuSeparator />
+                                        <DropdownMenuSeparator className="bg-white/10" />
                                         <DropdownMenuItem asChild>
-                                            <Link href="/dashboard" className="cursor-pointer">Dashboard</Link>
+                                            <Link href="/dashboard" className="cursor-pointer px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all">
+                                                Dashboard
+                                            </Link>
                                         </DropdownMenuItem>
                                         <DropdownMenuItem asChild>
-                                            <Link href="/my-bookings" className="cursor-pointer">Mis Viajes</Link>
+                                            <Link href="/my-bookings" className="cursor-pointer px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all">
+                                                Mis Viajes
+                                            </Link>
                                         </DropdownMenuItem>
-                                        <DropdownMenuSeparator />
+                                        <DropdownMenuSeparator className="bg-white/10" />
                                         <DropdownMenuItem
                                             onClick={() => signOut({ callbackUrl: '/' })}
-                                            className="cursor-pointer text-red-600 focus:text-red-600"
+                                            className="cursor-pointer px-4 py-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-all"
                                         >
                                             <LogOut className="mr-2 h-4 w-4" />
                                             <span>Cerrar Sesión</span>
@@ -97,22 +108,24 @@ export default function Header() {
                         ) : (
                             <>
                                 <Link href="/login">
-                                    <Button variant="ghost" className="text-base font-medium text-gray-700 hover:text-[#1E3A8A]">
+                                    <Button variant="ghost" className="text-sm font-semibold text-white/80 px-4 py-2 rounded-xl hover:text-white hover:bg-white/10 backdrop-blur-md transition-all duration-300 border border-transparent hover:border-white/20">
                                         Iniciar Sesión
                                     </Button>
                                 </Link>
                                 <Link href="/register">
-                                    <Button className="bg-[#1E3A8A] hover:bg-blue-800 text-white">
+                                    <Button className="bg-gradient-to-r from-[#FFD600] to-yellow-400 hover:from-yellow-300 hover:to-yellow-500 text-[#0052A5] font-bold px-6 py-2 rounded-xl shadow-lg shadow-[#FFD600]/30 transition-all duration-300 hover:shadow-xl hover:shadow-[#FFD600]/50 transform hover:scale-105">
                                         Registrarse
                                     </Button>
                                 </Link>
                             </>
                         )}
                     </div>
+
+                    {/* Mobile Menu Button */}
                     <div className="lg:hidden">
                         <button
                             type="button"
-                            className="-mx-2 rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
+                            className="p-2 rounded-xl text-white/70 hover:text-white hover:bg-white/10 backdrop-blur-md transition-all duration-300 border border-transparent hover:border-white/20"
                             onClick={() => setIsOpen(!isOpen)}
                         >
                             <span className="sr-only">Abrir menú</span>
@@ -127,31 +140,31 @@ export default function Header() {
 
                 {/* Mobile menu */}
                 {isOpen && (
-                    <div className="py-4 flex flex-col space-y-4 lg:hidden">
+                    <div className="py-4 flex flex-col space-y-2 lg:hidden bg-gradient-to-b from-white/5 to-transparent backdrop-blur-sm rounded-xl border border-white/10 mt-2 px-2">
                         {navigation.map((link) => (
                             <Link
                                 key={link.name}
                                 href={link.href}
-                                className="text-base font-medium text-gray-700 hover:text-[#1E3A8A]"
+                                className="px-4 py-3 rounded-lg text-sm font-semibold text-white/80 hover:text-white hover:bg-white/10 transition-all duration-300"
                                 onClick={() => setIsOpen(false)}
                             >
                                 {link.name}
                             </Link>
                         ))}
-                        <div className="flex flex-col space-y-2 mt-4">
+                        <div className="flex flex-col space-y-2 mt-4 pt-4 border-t border-white/10">
                             {session ? (
                                 <>
-                                    <div className="px-3 py-2 text-sm font-medium text-gray-500">
+                                    <div className="px-4 py-2 text-xs font-semibold text-white/50">
                                         Conectado como {session.user?.name}
                                     </div>
                                     <Link href="/dashboard" onClick={() => setIsOpen(false)}>
-                                        <Button variant="ghost" className="w-full justify-start">
+                                        <Button variant="ghost" className="w-full justify-start px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all">
                                             Dashboard
                                         </Button>
                                     </Link>
                                     <Button
                                         variant="ghost"
-                                        className="w-full justify-start text-red-600"
+                                        className="w-full justify-start px-4 py-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-all"
                                         onClick={() => {
                                             signOut()
                                             setIsOpen(false)
@@ -163,12 +176,12 @@ export default function Header() {
                             ) : (
                                 <>
                                     <Link href="/login" onClick={() => setIsOpen(false)}>
-                                        <Button variant="ghost" className="w-full justify-start">
+                                        <Button variant="ghost" className="w-full justify-start px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all">
                                             Iniciar Sesión
                                         </Button>
                                     </Link>
                                     <Link href="/register" onClick={() => setIsOpen(false)}>
-                                        <Button className="w-full bg-[#1E3A8A] hover:bg-blue-800 text-white">
+                                        <Button className="w-full bg-gradient-to-r from-[#FFD600] to-yellow-400 hover:from-yellow-300 hover:to-yellow-500 text-[#0052A5] font-bold rounded-lg transition-all">
                                             Registrarse
                                         </Button>
                                     </Link>

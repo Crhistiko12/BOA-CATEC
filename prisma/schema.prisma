@@ -8,14 +8,15 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(uuid())
-  email         String    @unique
+  id            String          @id @default(uuid())
+  email         String          @unique
   password      String?
   name          String?
-  role          Role      @default(USER)
+  role          Role            @default(USER)
   bookings      Booking[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  supportTickets SupportTicket[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
   chatSessions  ChatSession[]
 }
 
@@ -26,11 +27,11 @@ enum Role {
 }
 
 model Booking {
-  id            String    @id @default(uuid())
+  id            String        @id @default(uuid())
   userId        String
-  user          User      @relation(fields: [userId], references: [id])
+  user          User          @relation(fields: [userId], references: [id])
   flightId      String
-  flight        Flight    @relation(fields: [flightId], references: [id])
+  flight        Flight        @relation(fields: [flightId], references: [id])
   status        BookingStatus @default(CONFIRMED)
   totalPrice    Float
   passengers    Passenger[]
@@ -38,28 +39,77 @@ model Booking {
   pets          Pet[]
   refundRequest RefundRequest?
   payment       Payment?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  tickets       Ticket[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 }
 
 enum BookingStatus {
+  PENDING
   CONFIRMED
   CANCELLED
   COMPLETED
 }
 
-model Flight {
+model Ticket {
   id            String    @id @default(uuid())
-  flightNumber  String    @unique
-  origin        String
-  destination   String
-  departureTime DateTime
-  arrivalTime   DateTime
-  price         Float
-  capacity      Int
-  bookings      Booking[]
+  bookingId     String
+  booking       Booking   @relation(fields: [bookingId], references: [id])
+  passengerId   String
+  passenger     Passenger @relation(fields: [passengerId], references: [id])
+  ticketNumber  String    @unique // e.g., 930213456789
+  seatNumber    String
+  class         FlightClass @default(ECONOMY)
+  status        TicketStatus @default(ISSUED)
+  qrCode        String?   // URL or base64
   createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+}
+
+enum TicketStatus {
+  ISSUED
+  CHECKED_IN
+  BOARDED
+  USED
+  CANCELLED
+}
+
+enum FlightClass {
+  ECONOMY
+  BUSINESS
+}
+
+model Flight {
+  id             String    @id @default(uuid())
+  flightNumber   String    @unique
+  origin         String    // Code like LPB
+  destination    String    // Code like VVI
+  departureTime  DateTime
+  arrivalTime    DateTime
+  price          Float
+  capacity       Int
+  availableSeats Int
+  status         FlightStatus @default(SCHEDULED)
+  bookings       Booking[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+enum FlightStatus {
+  SCHEDULED
+  DELAYED
+  ON_TIME
+  CANCELLED
+  LANDED
+}
+
+model Destination {
+  id          String   @id @default(uuid())
+  code        String   @unique // LPB, VVI
+  name        String   // La Paz, Santa Cruz
+  country     String
+  description String?
+  imageUrl    String?
+  popular     Boolean  @default(false)
 }
 
 model Passenger {
@@ -70,6 +120,7 @@ model Passenger {
   lastName  String
   type      PassengerType
   seatNumber String?
+  tickets   Ticket[]
 }
 
 enum PassengerType {
@@ -128,6 +179,32 @@ enum RefundStatus {
   APPROVED
   REJECTED
   PROCESSED
+}
+
+model SupportTicket {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  subject   String
+  message   String
+  status    SupportStatus @default(OPEN)
+  priority  SupportPriority @default(MEDIUM)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum SupportStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum SupportPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
 }
 
 model Payment {

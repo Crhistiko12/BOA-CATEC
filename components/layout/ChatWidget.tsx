@@ -49,23 +49,18 @@ export default function ChatWidget() {
         setIsLoading(true)
 
         try {
-            const response = await fetch('/api/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: textToSend })
-            })
+            // Import dynamically to avoid server-only module in client bundle issues if not handled by Next.js automatically
+            // But server actions can be imported directly in client components.
+            const { processChat } = await import('@/lib/chatbot-actions')
+            const responses = await processChat(textToSend)
 
-            if (!response.ok) throw new Error('Network response was not ok')
-
-            const data = await response.json()
-            const botMessages = data.responses || ['Lo siento, hubo un error.']
-
-            botMessages.forEach((text: string) => {
+            responses.forEach((text: string) => {
                 setMessages(prev => [...prev, { text, sender: 'bot' }])
             })
         } catch (error) {
+            console.error(error)
             setMessages(prev => [...prev, {
-                text: 'Lo siento, no pude conectarme al servidor.',
+                text: 'Lo siento, no pude procesar tu mensaje.',
                 sender: 'bot'
             }])
         } finally {
@@ -82,14 +77,14 @@ export default function ChatWidget() {
             {!isOpen && (
                 <button
                     onClick={() => setIsOpen(true)}
-                    className="fixed bottom-6 right-6 bg-[#1E3A8A] text-white p-4 rounded-full shadow-lg hover:bg-blue-800 transition-all z-50"
+                    className="fixed bottom-6 right-6 bg-[#1E3A8A] text-white p-4 rounded-full shadow-lg hover:bg-blue-800 transition-all z-[9999]"
                 >
                     <MessageCircle className="h-6 w-6" />
                 </button>
             )}
 
             {isOpen && (
-                <div className="fixed bottom-6 right-6 w-96 h-[600px] bg-white rounded-lg shadow-2xl flex flex-col z-50">
+                <div className="fixed bottom-6 right-6 w-96 h-[600px] bg-white rounded-lg shadow-2xl flex flex-col z-[9999]">
                     <div className="bg-[#1E3A8A] text-white p-4 rounded-t-lg flex justify-between items-center">
                         <h3 className="font-bold">Asistente BOA</h3>
                         <button onClick={() => setIsOpen(false)}>
