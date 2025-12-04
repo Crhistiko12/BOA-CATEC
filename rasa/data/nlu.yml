@@ -1,0 +1,150 @@
+version: "3.1"
+
+nlu:
+- intent: saludar
+  examples: |
+    - hola
+    - buenos días
+    - buenas tardes
+    - ¿cómo estás?
+    - hello
+    - hey
+    - buenas
+    - qué tal
+    - hola bot
+    - buenos dias
+    - buenas noches
+    - hi
+    - saludos
+    - qué hay
+    - iniciar
+    - comenzar chat
+
+- intent: despedir
+  examples: |
+    - adiós
+    - hasta luego
+    - nos vemos
+    - chao
+    - bye
+    - hasta pronto
+    - me voy
+    - gracias, adiós
+
+- intent: consultar_vuelo
+  examples: |
+    - ¿cuál es el estado de mi vuelo?
+    - quiero saber sobre mi vuelo
+    - tengo un vuelo, ¿cómo va?
+    - [BOA123](flight_number)
+    - vuelo [BOA456](flight_number)
+    - estado de vuelo
+    - mi vuelo está retrasado?
+    - información del vuelo [OB-760](flight_number)
+    - estado vuelo [OB-654](flight_number)
+    - mi vuelo sale a tiempo?
+    - hay retrasos en el vuelo a miami?
+    - consultar salida de vuelo
+    - a qué hora llega el vuelo de madrid
+    - info de vuelo
+    - rastrear vuelo
+
+- intent: hacer_checkin
+  examples: |
+    - quiero hacer check-in
+    - hacer check in para mi vuelo
+    - ¿cómo hago check-in?
+    - checkin para [BOA789](flight_number)
+    - check-in online
+    - necesito hacer check-in
+    - hacer check in ahora
+
+- intent: solicitar_reembolso
+  examples: |
+    - necesito solicitar un reembolso
+    - quiero reembolsar mi boleto
+    - ¿cómo pido un reembolso?
+    - mi vuelo se canceló, quiero reembolso
+    - reembolso de pasaje
+    - devolver dinero del boleto
+    - cancelar y pedir reembolso
+
+- intent: politicas_equipaje
+  examples: |
+    - ¿cuáles son las políticas de equipaje?
+    - ¿qué equipaje puedo llevar?
+    - equipaje permitido
+    - ¿puedo llevar equipaje extra?
+    - cuánto equipaje
+    - peso de maleta
+    - equipaje de mano
+
+- intent: perdida_equipaje
+  examples: |
+    - perdí mi equipaje
+    - no encuentro mi maleta
+    - equipaje perdido
+    - ¿qué hago si perdí mi equipaje?
+    - mi maleta no llegó
+    - rastrear equipaje
+    - dónde está mi equipaje
+
+- intent: viajar_mascota
+  examples: |
+    - quiero viajar con mi mascota
+    - ¿puedo llevar a mi perro?
+    - mascotas en cabina
+    - certificado de salud para mascotas
+    - viajar con gato
+    - llevar mascota en avión
+    - requisitos para mascotas
+
+- intent: contacto_soporte
+  examples: |
+    - necesito hablar con un agente
+    - quiero contacto humano
+    - soporte técnico
+    - hablar con persona
+    - atención al cliente
+    - contactar con alguien
+    - ayuda humana
+
+- intent: ask_suggestions
+  examples: |
+    - ¿qué sugerencias me recomiendas?
+    - qué me recomiendas
+    - dame sugerencias
+    - qué puedo hacer
+    - qué opciones tengo
+    - qué me sugieres
+    - recomiéndame algo
+    - qué puedes hacer
+    - ayúdame con sugerencias
+    - muéstrame las opciones
+    - qué servicios ofreces
+    - qué puedo consultar
+    - en qué me puedes ayudar
+    - cuáles son las opciones más importantes
+    - cuáles son las opciones más importantes
+    - qué es lo más importante
+
+- intent: ask_walkthrough
+  examples: |
+    - qué puedo hacer en la página
+    - guíame por el sitio
+    - dame un tour
+    - cómo funciona la web
+    - qué funcionalidades tienen
+    - explícame el sistema
+    - walkthrough del sitio
+    - recorrido por la aplicación
+
+- intent: agent_handoff
+  examples: |
+    - quiero hablar con un humano
+    - pásame con un agente
+    - necesito soporte real
+    - hablar con operador
+    - conectar con asesor
+    - no eres suficiente, quiero una persona
+    - agente por favor
