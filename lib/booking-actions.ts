@@ -60,3 +60,112 @@ export async function createBooking(data: { flightId: string, passengers: any[],
 
     return { success: true, bookingId: booking.id };
 }
+
+// Obtener reserva por código
+export async function getBookingByCode(code: string) {
+    try {
+        // El código puede ser el ID completo o los primeros 10 caracteres
+        const booking = await prisma.booking.findFirst({
+            where: {
+                OR: [
+                    { id: code },
+                    { id: { startsWith: code.toLowerCase().replace('boa-', '') } }
+                ]
+            },
+            include: {
+                flight: true,
+                passengers: true,
+                tickets: true,
+                user: {
+                    select: {
+                        name: true,
+                        email: true
+                    }
+                }
+            }
+        });
+
+        return booking;
+    } catch (error) {
+        console.error('Error getting booking:', error);
+        return null;
+    }
+}
+
+// Realizar check-in
+export async function performCheckIn(bookingCode: string) {
+    try {
+        const booking = await getBookingByCode(bookingCode);
+
+        if (!booking) {
+            return {
+                success: false,
+                error: 'Código de reserva no encontrado'
+            };
+        }
+
+        // Verificar que el vuelo no haya partido
+        if (new Date(booking.flight.departureTime) < new Date()) {
+            return {
+                success: false,
+                error: 'El vuelo ya ha partido'
+            };
+        }
+
+        // Verificar que no se haya hecho check-in antes
+        const alreadyCheckedIn = booking.tickets.some(t => t.status === 'CHECKED_IN');
+        if (alreadyCheckedIn) {
+            return {
+                success: false,
+                error: 'Ya se realizó el check-in para esta reserva'
+            };
+        }
+
+        // Actualizar estado de todos los tickets
+        await prisma.ticket.updateMany({
+            where: { bookingId: booking.id },
+            data: { status: 'CHECKED_IN' }
+        });
+
+        return {
+            success: true,
+            booking: {
+                ...booking,
+                tickets: booking.tickets.map(t => ({ ...t, status: 'CHECKED_IN' as const }))
+            }
+        };
+    } catch (error: any) {
+        console.error('Error performing check-in:', error);
+        return {
+            success: false,
+            error: error.message || 'Error al realizar check-in'
+        };
+    }
+}
+
+// Obtener todas las reservas del usuario autenticado
+export async function getUserBookingsAuth() {
+    try {
+        const session = await auth();
+        if (!session?.user?.email) {
+            return [];
+        }
+
+        const bookings = await prisma.booking.findMany({
+            where: {
+                user: { email: session.user.email }
+            },
+            include: {
+                flight: true,
+                passengers: true,
+                tickets: true
+            },
+            orderBy: { createdAt: 'desc' }
+        });
+
+        return bookings;
+    } catch (error) {
+        console.error('Error getting user bookings:', error);
+        return [];
+    }
+}

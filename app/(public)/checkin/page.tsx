@@ -4,23 +4,58 @@ import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { CheckCircle2, Plane, User, Luggage } from 'lucide-react'
+import { CheckCircle2, Plane, User, Loader2, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
+import { performCheckIn } from '@/lib/booking-actions'
+import { sendCheckInEmail, sendCheckInWhatsApp } from '@/lib/notifications'
 
 export default function CheckinPage() {
     const [step, setStep] = useState(1)
-    const [formData, setFormData] = useState({
-        reservationCode: '',
-        lastName: '',
-        selectedSeat: ''
-    })
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
+    const [bookingCode, setBookingCode] = useState('')
+    const [bookingData, setBookingData] = useState<any>(null)
 
-    const handleNext = () => {
-        if (step < 3) setStep(step + 1)
-    }
+    const handleCheckIn = async () => {
+        if (!bookingCode.trim()) {
+            setError('Por favor ingresa tu código de reserva')
+            return
+        }
 
-    const handleBack = () => {
-        if (step > 1) setStep(step - 1)
+        setLoading(true)
+        setError('')
+
+        try {
+            const result = await performCheckIn(bookingCode)
+
+            if (!result.success) {
+                setError(result.error || 'Error al realizar check-in')
+                setLoading(false)
+                return
+            }
+
+            setBookingData(result.booking)
+
+            // Enviar notificaciones (opcional, no bloquea el flujo)
+            if (result.booking?.user?.email) {
+                sendCheckInEmail({
+                    email: result.booking.user.email,
+                    name: result.booking.user.name || 'Pasajero',
+                    bookingCode: bookingCode,
+                    flightNumber: result.booking.flight.flightNumber,
+                    origin: result.booking.flight.origin,
+                    destination: result.booking.flight.destination,
+                    departureTime: result.booking.flight.departureTime,
+                    seatNumber: result.booking.tickets[0]?.seatNumber || 'N/A'
+                }).catch(err => console.error('Error sending email:', err))
+            }
+
+            setStep(2)
+            setLoading(false)
+        } catch (err: any) {
+            setError(err.message || 'Error al procesar check-in')
+            setLoading(false)
+        }
     }
 
     return (
@@ -38,56 +73,15 @@ export default function CheckinPage() {
                 </div>
             </div>
 
-            {/* Progress Steps */}
-            <div className="bg-white border-b">
-                <div className="container mx-auto px-4 py-6">
-                    <div className="max-w-4xl mx-auto">
-                        <div className="flex items-center justify-between">
-                            {[
-                                { num: 1, title: 'Identificación', icon: User },
-                                { num: 2, title: 'Selección de Asiento', icon: Plane },
-                                { num: 3, title: 'Confirmación', icon: CheckCircle2 }
-                            ].map((s, idx) => {
-                                const Icon = s.icon
-                                return (
-                                    <div key={s.num} className="flex items-center flex-1">
-                                        <div className="flex flex-col items-center flex-1">
-                                            <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 transition-all ${step >= s.num
-                                                    ? 'bg-[#0033A0] text-white'
-                                                    : 'bg-gray-200 text-gray-500'
-                                                }`}>
-                                                {step > s.num ? (
-                                                    <CheckCircle2 className="h-6 w-6" />
-                                                ) : (
-                                                    <Icon className="h-6 w-6" />
-                                                )}
-                                            </div>
-                                            <p className={`text-sm font-medium text-center ${step >= s.num ? 'text-[#0033A0]' : 'text-gray-500'
-                                                }`}>
-                                                {s.title}
-                                            </p>
-                                        </div>
-                                        {idx < 2 && (
-                                            <div className={`h-1 flex-1 mx-4 transition-all ${step > s.num ? 'bg-[#0033A0]' : 'bg-gray-200'
-                                                }`} />
-                                        )}
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             {/* Main Content */}
             <div className="container mx-auto px-4 py-12">
                 <div className="max-w-2xl mx-auto">
-                    {/* Step 1: Identification */}
+                    {/* Step 1: Enter Booking Code */}
                     {step === 1 && (
                         <Card>
                             <CardHeader>
                                 <CardTitle className="text-2xl text-[#0033A0]">Identifícate</CardTitle>
-                                <p className="text-gray-600">Ingresa los datos de tu reserva</p>
+                                <p className="text-gray-600">Ingresa tu código de reserva</p>
                             </CardHeader>
                             <CardContent className="space-y-6">
                                 <div>
@@ -95,143 +89,56 @@ export default function CheckinPage() {
                                         Código de Reserva
                                     </label>
                                     <Input
-                                        placeholder="Ej: XYH2B"
-                                        value={formData.reservationCode}
-                                        onChange={(e) => setFormData({ ...formData, reservationCode: e.target.value.toUpperCase() })}
+                                        placeholder="Ej: BOA-ABC123 o código completo"
+                                        value={bookingCode}
+                                        onChange={(e) => {
+                                            setBookingCode(e.target.value.toUpperCase())
+                                            setError('')
+                                        }}
                                         className="text-lg"
+                                        disabled={loading}
                                     />
                                     <p className="text-xs text-gray-500 mt-1">
                                         Encontrarás tu código en el email de confirmación
                                     </p>
                                 </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Apellido del Pasajero
-                                    </label>
-                                    <Input
-                                        placeholder="Como aparece en tu boleto"
-                                        value={formData.lastName}
-                                        onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                                        className="text-lg"
-                                    />
-                                </div>
+                                {error && (
+                                    <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
+                                        <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+                                        <p className="text-red-800 text-sm">{error}</p>
+                                    </div>
+                                )}
 
                                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                                     <h4 className="font-semibold text-[#0033A0] mb-2">💡 Consejos</h4>
                                     <ul className="text-sm text-gray-700 space-y-1">
                                         <li>• El check-in online abre 24 horas antes del vuelo</li>
-                                        <li>• Puedes seleccionar tu asiento preferido</li>
+                                        <li>• Asegúrate de tener tu código de reserva a mano</li>
                                         <li>• Lleva tu pase de abordar digital o impreso</li>
                                     </ul>
                                 </div>
 
                                 <Button
-                                    onClick={handleNext}
-                                    disabled={!formData.reservationCode || !formData.lastName}
+                                    onClick={handleCheckIn}
+                                    disabled={!bookingCode || loading}
                                     className="w-full bg-[#0033A0] hover:bg-blue-800 text-lg py-6"
                                 >
-                                    Buscar Reserva
+                                    {loading ? (
+                                        <>
+                                            <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                                            Procesando...
+                                        </>
+                                    ) : (
+                                        'Realizar Check-in'
+                                    )}
                                 </Button>
                             </CardContent>
                         </Card>
                     )}
 
-                    {/* Step 2: Seat Selection */}
-                    {step === 2 && (
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="text-2xl text-[#0033A0]">Selecciona tu Asiento</CardTitle>
-                                <p className="text-gray-600">Vuelo OB-760: Miami (MIA) → Santa Cruz (VVI)</p>
-                            </CardHeader>
-                            <CardContent className="space-y-6">
-                                <div className="bg-gray-100 rounded-lg p-6">
-                                    <div className="text-center mb-6">
-                                        <Plane className="h-12 w-12 mx-auto text-[#0033A0] mb-2" />
-                                        <p className="text-sm text-gray-600">Boeing 737-800 • 180 asientos</p>
-                                    </div>
-
-                                    {/* Seat Map Simulation */}
-                                    <div className="grid grid-cols-7 gap-2 max-w-md mx-auto">
-                                        {['A', 'B', 'C', '', 'D', 'E', 'F'].map((letter, idx) => (
-                                            <div key={idx} className="text-center text-xs font-semibold text-gray-500">
-                                                {letter}
-                                            </div>
-                                        ))}
-                                        {Array.from({ length: 12 }).map((_, rowIdx) => (
-                                            ['A', 'B', 'C', '', 'D', 'E', 'F'].map((letter, colIdx) => {
-                                                if (letter === '') {
-                                                    return <div key={`${rowIdx}-${colIdx}`} className="text-center text-xs text-gray-400">{rowIdx + 1}</div>
-                                                }
-                                                const seatId = `${rowIdx + 1}${letter}`
-                                                const isOccupied = Math.random() > 0.6
-                                                const isSelected = formData.selectedSeat === seatId
-
-                                                return (
-                                                    <button
-                                                        key={seatId}
-                                                        onClick={() => !isOccupied && setFormData({ ...formData, selectedSeat: seatId })}
-                                                        disabled={isOccupied}
-                                                        className={`h-8 rounded text-xs font-medium transition-all ${isSelected
-                                                                ? 'bg-[#0033A0] text-white'
-                                                                : isOccupied
-                                                                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                                                    : 'bg-white border-2 border-gray-300 hover:border-[#0033A0] hover:bg-blue-50'
-                                                            }`}
-                                                    >
-                                                        {seatId}
-                                                    </button>
-                                                )
-                                            })
-                                        ))}
-                                    </div>
-
-                                    <div className="flex justify-center gap-6 mt-6 text-xs">
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-6 h-6 bg-white border-2 border-gray-300 rounded"></div>
-                                            <span>Disponible</span>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-6 h-6 bg-gray-300 rounded"></div>
-                                            <span>Ocupado</span>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-6 h-6 bg-[#0033A0] rounded"></div>
-                                            <span>Seleccionado</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {formData.selectedSeat && (
-                                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                                        <p className="text-green-800 font-medium">
-                                            ✓ Asiento {formData.selectedSeat} seleccionado
-                                        </p>
-                                    </div>
-                                )}
-
-                                <div className="flex gap-4">
-                                    <Button
-                                        onClick={handleBack}
-                                        variant="outline"
-                                        className="flex-1"
-                                    >
-                                        Atrás
-                                    </Button>
-                                    <Button
-                                        onClick={handleNext}
-                                        disabled={!formData.selectedSeat}
-                                        className="flex-1 bg-[#0033A0] hover:bg-blue-800"
-                                    >
-                                        Continuar
-                                    </Button>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    )}
-
-                    {/* Step 3: Confirmation */}
-                    {step === 3 && (
+                    {/* Step 2: Confirmation */}
+                    {step === 2 && bookingData && (
                         <Card>
                             <CardHeader>
                                 <div className="text-center">
@@ -246,47 +153,58 @@ export default function CheckinPage() {
                                     <div className="flex justify-between items-start mb-6">
                                         <div>
                                             <p className="text-sm opacity-90">Pasajero</p>
-                                            <p className="text-xl font-bold">{formData.lastName.toUpperCase()}</p>
+                                            <p className="text-xl font-bold">
+                                                {bookingData.passengers[0]?.firstName} {bookingData.passengers[0]?.lastName}
+                                            </p>
                                         </div>
                                         <div className="text-right">
                                             <p className="text-sm opacity-90">Vuelo</p>
-                                            <p className="text-xl font-bold">OB-760</p>
+                                            <p className="text-xl font-bold">{bookingData.flight.flightNumber}</p>
                                         </div>
                                     </div>
 
                                     <div className="grid grid-cols-3 gap-4 mb-6">
                                         <div>
                                             <p className="text-xs opacity-75">Origen</p>
-                                            <p className="text-2xl font-bold">MIA</p>
-                                            <p className="text-xs">Miami</p>
+                                            <p className="text-2xl font-bold">{bookingData.flight.origin}</p>
                                         </div>
                                         <div className="flex items-center justify-center">
                                             <Plane className="h-6 w-6" />
                                         </div>
                                         <div className="text-right">
                                             <p className="text-xs opacity-75">Destino</p>
-                                            <p className="text-2xl font-bold">VVI</p>
-                                            <p className="text-xs">Santa Cruz</p>
+                                            <p className="text-2xl font-bold">{bookingData.flight.destination}</p>
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-4 gap-4 border-t border-white/20 pt-4">
+                                    <div className="grid grid-cols-3 gap-4 border-t border-white/20 pt-4">
                                         <div>
                                             <p className="text-xs opacity-75">Fecha</p>
-                                            <p className="font-semibold">15 Dic</p>
+                                            <p className="font-semibold">
+                                                {new Date(bookingData.flight.departureTime).toLocaleDateString('es-BO', {
+                                                    day: 'numeric',
+                                                    month: 'short'
+                                                })}
+                                            </p>
                                         </div>
                                         <div>
                                             <p className="text-xs opacity-75">Hora</p>
-                                            <p className="font-semibold">22:00</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-xs opacity-75">Puerta</p>
-                                            <p className="font-semibold">4</p>
+                                            <p className="font-semibold">
+                                                {new Date(bookingData.flight.departureTime).toLocaleTimeString('es-BO', {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                })}
+                                            </p>
                                         </div>
                                         <div>
                                             <p className="text-xs opacity-75">Asiento</p>
-                                            <p className="font-semibold">{formData.selectedSeat}</p>
+                                            <p className="font-semibold">{bookingData.tickets[0]?.seatNumber || 'N/A'}</p>
                                         </div>
+                                    </div>
+
+                                    <div className="mt-4 pt-4 border-t border-white/20">
+                                        <p className="text-xs opacity-75">Código de Reserva</p>
+                                        <p className="font-mono font-bold text-lg">{bookingCode}</p>
                                     </div>
                                 </div>
 
@@ -299,19 +217,13 @@ export default function CheckinPage() {
                                     </ul>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4">
-                                    <Button
-                                        variant="outline"
-                                        className="w-full"
-                                    >
-                                        📧 Enviar por Email
-                                    </Button>
-                                    <Button
-                                        className="w-full bg-[#0033A0] hover:bg-blue-800"
-                                    >
-                                        📥 Descargar PDF
-                                    </Button>
-                                </div>
+                                {bookingData.user?.email && (
+                                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                                        <p className="text-green-800 text-sm">
+                                            ✓ Se ha enviado una confirmación a {bookingData.user.email}
+                                        </p>
+                                    </div>
+                                )}
 
                                 <Link href="/dashboard">
                                     <Button

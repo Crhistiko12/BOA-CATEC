@@ -5,30 +5,57 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { MessageSquare, Plus, Phone, AlertCircle } from 'lucide-react'
-import { ticketStorage, getStatusColor, formatTicketDate, type Ticket } from '@/lib/ticketStorage'
+import { MessageSquare, Plus, Phone, AlertCircle, Loader2 } from 'lucide-react'
+import { getUserSupportTickets } from '@/lib/support-ticket-actions'
+
+// Helper function to get status color
+function getStatusColor(status: string) {
+    switch (status) {
+        case 'OPEN':
+            return 'bg-blue-100 text-blue-800'
+        case 'IN_PROGRESS':
+            return 'bg-yellow-100 text-yellow-800'
+        case 'RESOLVED':
+            return 'bg-green-100 text-green-800'
+        case 'CLOSED':
+            return 'bg-gray-100 text-gray-800'
+        default:
+            return 'bg-gray-100 text-gray-800'
+    }
+}
+
+// Helper function to format date
+function formatTicketDate(date: Date | string) {
+    const d = new Date(date)
+    return d.toLocaleDateString('es-BO', { day: 'numeric', month: 'short', year: 'numeric' })
+}
 
 export default function SupportPage() {
     const router = useRouter()
-    const [tickets, setTickets] = useState<Ticket[]>([])
+    const [tickets, setTickets] = useState<any[]>([])
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        const loadTickets = async () => {
-            const { seedDemoTickets } = await import('@/lib/seedDemoTickets')
-            seedDemoTickets('diego.test@boa.bo')
-            const loadedTickets = ticketStorage.getAll()
-            setTickets(loadedTickets)
-            setIsLoading(false)
-        }
         loadTickets()
     }, [])
+
+    const loadTickets = async () => {
+        setIsLoading(true)
+        try {
+            const userTickets = await getUserSupportTickets()
+            setTickets(userTickets)
+        } catch (error) {
+            console.error('Error loading tickets:', error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
     if (isLoading) {
         return (
             <div className="min-h-screen bg-white flex items-center justify-center">
                 <div className="text-center">
-                    <div className="w-12 h-12 border-4 border-[#0052A5] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                    <Loader2 className="w-12 h-12 text-[#0052A5] animate-spin mx-auto mb-4" />
                     <p className="text-gray-600 font-medium">Cargando tickets...</p>
                 </div>
             </div>
@@ -100,7 +127,6 @@ export default function SupportPage() {
                                     {tickets.map((ticket) => (
                                         <div
                                             key={ticket.id}
-                                            onClick={() => router.push(`/ticket-details/${ticket.id}`)}
                                             className="flex items-center justify-between p-4 border-2 border-gray-100 rounded-xl hover:border-[#0052A5] hover:bg-blue-50 cursor-pointer transition-all group"
                                         >
                                             <div className="flex items-center gap-4 flex-1">
@@ -110,13 +136,25 @@ export default function SupportPage() {
                                                 <div className="flex-1">
                                                     <h4 className="font-bold text-gray-900">{ticket.subject}</h4>
                                                     <p className="text-xs text-gray-500 mt-1">
-                                                        {ticket.number} • {formatTicketDate(ticket.createdAt)}
+                                                        {ticket.id.slice(0, 8).toUpperCase()} • {formatTicketDate(ticket.createdAt)}
+                                                    </p>
+                                                    <p className="text-xs text-gray-600 mt-1 line-clamp-1">
+                                                        {ticket.message}
                                                     </p>
                                                 </div>
                                             </div>
-                                            <span className={`px-4 py-2 rounded-full text-xs font-bold ${getStatusColor(ticket.status)}`}>
-                                                {ticket.status}
-                                            </span>
+                                            <div className="flex flex-col items-end gap-2">
+                                                <span className={`px-4 py-2 rounded-full text-xs font-bold ${getStatusColor(ticket.status)}`}>
+                                                    {ticket.status}
+                                                </span>
+                                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${ticket.priority === 'URGENT' ? 'bg-red-100 text-red-800' :
+                                                        ticket.priority === 'HIGH' ? 'bg-orange-100 text-orange-800' :
+                                                            ticket.priority === 'MEDIUM' ? 'bg-yellow-100 text-yellow-800' :
+                                                                'bg-gray-100 text-gray-800'
+                                                    }`}>
+                                                    {ticket.priority}
+                                                </span>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
@@ -143,15 +181,15 @@ export default function SupportPage() {
                         <div className="bg-blue-50 border-2 border-blue-100 rounded-2xl p-6">
                             <h3 className="font-bold text-[#0052A5] mb-4">Enlaces Rápidos</h3>
                             <div className="space-y-2">
-                                <a href="#" className="block p-3 rounded-lg hover:bg-white transition-colors text-sm text-gray-700 hover:text-[#0052A5] font-medium">
+                                <Link href="/my-baggage" className="block p-3 rounded-lg hover:bg-white transition-colors text-sm text-gray-700 hover:text-[#0052A5] font-medium">
                                     📋 Ver Política de Equipaje
-                                </a>
-                                <a href="#" className="block p-3 rounded-lg hover:bg-white transition-colors text-sm text-gray-700 hover:text-[#0052A5] font-medium">
+                                </Link>
+                                <Link href="/vuelos" className="block p-3 rounded-lg hover:bg-white transition-colors text-sm text-gray-700 hover:text-[#0052A5] font-medium">
                                     ✈️ Estado de Vuelos
-                                </a>
-                                <a href="#" className="block p-3 rounded-lg hover:bg-white transition-colors text-sm text-gray-700 hover:text-[#0052A5] font-medium">
+                                </Link>
+                                <Link href="/create-ticket" className="block p-3 rounded-lg hover:bg-white transition-colors text-sm text-gray-700 hover:text-[#0052A5] font-medium">
                                     🆘 Preguntas Frecuentes
-                                </a>
+                                </Link>
                             </div>
                         </div>
 
@@ -162,7 +200,7 @@ export default function SupportPage() {
                                 <div>
                                     <p className="font-bold text-yellow-900 mb-2">Tiempo de Respuesta</p>
                                     <p className="text-sm text-yellow-800">
-                                        Respondemos tickets en menos de 2 horas durante horario comercial.
+                                        Respondemos tickets en menos de 24 horas. Para urgencias, usa WhatsApp.
                                     </p>
                                 </div>
                             </div>

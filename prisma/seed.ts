@@ -48,15 +48,25 @@ async function main() {
 
   // 3. Create Destinations
   const destinations = [
+    // Destinos Nacionales - 9 Departamentos de Bolivia
     { code: 'LPB', name: 'La Paz', country: 'Bolivia', description: 'La ciudad maravilla situada a más de 3,600 metros de altura', imageUrl: 'https://images.unsplash.com/photo-1588611910602-0941e7c536e4?q=80&w=1000&auto=format&fit=crop', popular: true },
     { code: 'VVI', name: 'Santa Cruz', country: 'Bolivia', description: 'Tierra de oportunidades y centro económico de Bolivia', imageUrl: 'https://images.unsplash.com/photo-1598396006622-446757530699?q=80&w=1000&auto=format&fit=crop', popular: true },
     { code: 'CBB', name: 'Cochabamba', country: 'Bolivia', description: 'Corazón gastronómico y ciudad de la eterna primavera', imageUrl: 'https://images.unsplash.com/photo-1569388330292-7a6a84176db9?q=80&w=1000&auto=format&fit=crop', popular: true },
+    { code: 'TJA', name: 'Tarija', country: 'Bolivia', description: 'Valle de vinos y tradiciones', imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1000&auto=format&fit=crop', popular: false },
+    { code: 'SRE', name: 'Sucre', country: 'Bolivia', description: 'Capital constitucional y ciudad blanca', imageUrl: 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?q=80&w=1000&auto=format&fit=crop', popular: false },
+    { code: 'POI', name: 'Potosí', country: 'Bolivia', description: 'Ciudad imperial con historia minera', imageUrl: 'https://images.unsplash.com/photo-1464207687429-7505649dae38?q=80&w=1000&auto=format&fit=crop', popular: false },
+    { code: 'ORU', name: 'Oruro', country: 'Bolivia', description: 'Capital del folklore boliviano', imageUrl: 'https://images.unsplash.com/photo-1533094602577-198d3beab8ea?q=80&w=1000&auto=format&fit=crop', popular: false },
+    { code: 'TDD', name: 'Trinidad', country: 'Bolivia', description: 'Puerta de la Amazonía boliviana', imageUrl: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=1000&auto=format&fit=crop', popular: false },
+    { code: 'CIJ', name: 'Cobija', country: 'Bolivia', description: 'Perla de la Amazonía en Pando', imageUrl: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1000&auto=format&fit=crop', popular: false },
+
+    // Destinos Internacionales
     { code: 'MIA', name: 'Miami', country: 'USA', description: 'Playas paradisíacas y destino de compras', imageUrl: 'https://images.unsplash.com/photo-1535498730771-e735b998cd64?q=80&w=1000&auto=format&fit=crop', popular: true },
     { code: 'MAD', name: 'Madrid', country: 'España', description: 'Puerta de Europa con historia y cultura', imageUrl: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?q=80&w=1000&auto=format&fit=crop', popular: true },
     { code: 'EZE', name: 'Buenos Aires', country: 'Argentina', description: 'París de Sudamérica', imageUrl: 'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?q=80&w=1000&auto=format&fit=crop', popular: false },
     { code: 'LIM', name: 'Lima', country: 'Perú', description: 'Capital gastronómica de América', imageUrl: 'https://images.unsplash.com/photo-1531968455001-5c5272a41129?q=80&w=1000&auto=format&fit=crop', popular: false },
     { code: 'SCL', name: 'Santiago', country: 'Chile', description: 'Moderna ciudad rodeada de montañas', imageUrl: 'https://images.unsplash.com/photo-1555365634-c8f9c4aae1b5?q=80&w=1000&auto=format&fit=crop', popular: false },
   ];
+
 
   for (const dest of destinations) {
     await prisma.destination.create({ data: dest });
@@ -121,6 +131,74 @@ async function main() {
       status: 'SCHEDULED',
     },
 
+    // Vuelos adicionales nacionales - Completar 9 departamentos
+    {
+      flightNumber: 'OB-203',
+      origin: 'TJA',
+      destination: 'VVI',
+      departureTime: createDate(3, 7, 0),
+      arrivalTime: createDate(3, 8, 15),
+      price: 95.00,
+      capacity: 100,
+      availableSeats: 75,
+      status: 'SCHEDULED',
+    },
+    {
+      flightNumber: 'OB-204',
+      origin: 'SRE',
+      destination: 'LPB',
+      departureTime: createDate(3, 12, 0),
+      arrivalTime: createDate(3, 13, 0),
+      price: 75.00,
+      capacity: 100,
+      availableSeats: 80,
+      status: 'SCHEDULED',
+    },
+    {
+      flightNumber: 'OB-205',
+      origin: 'POI',
+      destination: 'CBB',
+      departureTime: createDate(4, 9, 30),
+      arrivalTime: createDate(4, 10, 45),
+      price: 80.00,
+      capacity: 90,
+      availableSeats: 70,
+      status: 'SCHEDULED',
+    },
+    {
+      flightNumber: 'OB-206',
+      origin: 'ORU',
+      destination: 'LPB',
+      departureTime: createDate(4, 15, 0),
+      arrivalTime: createDate(4, 16, 0),
+      price: 60.00,
+      capacity: 100,
+      availableSeats: 85,
+      status: 'SCHEDULED',
+    },
+    {
+      flightNumber: 'OB-207',
+      origin: 'TDD',
+      destination: 'VVI',
+      departureTime: createDate(5, 10, 30),
+      arrivalTime: createDate(5, 11, 30),
+      price: 110.00,
+      capacity: 80,
+      availableSeats: 60,
+      status: 'SCHEDULED',
+    },
+    {
+      flightNumber: 'OB-208',
+      origin: 'CIJ',
+      destination: 'LPB',
+      departureTime: createDate(5, 13, 0),
+      arrivalTime: createDate(5, 15, 30),
+      price: 150.00,
+      capacity: 70,
+      availableSeats: 50,
+      status: 'SCHEDULED',
+    },
+
     // Vuelos Internacionales
     {
       flightNumber: 'OB-760',
@@ -168,7 +246,7 @@ async function main() {
     },
     {
       flightNumber: 'OB-300',
-      origin: 'VVI',
+      origin: 'LPB',
       destination: 'EZE',
       departureTime: createDate(3, 11, 0),
       arrivalTime: createDate(3, 14, 30),
@@ -179,13 +257,24 @@ async function main() {
     },
     {
       flightNumber: 'OB-400',
-      origin: 'LPB',
+      origin: 'VVI',
       destination: 'LIM',
       departureTime: createDate(4, 9, 0),
       arrivalTime: createDate(4, 11, 30),
       price: 220.00,
       capacity: 160,
       availableSeats: 130,
+      status: 'SCHEDULED',
+    },
+    {
+      flightNumber: 'OB-500',
+      origin: 'LPB',
+      destination: 'SCL',
+      departureTime: createDate(6, 8, 0),
+      arrivalTime: createDate(6, 11, 0),
+      price: 240.00,
+      capacity: 160,
+      availableSeats: 120,
       status: 'SCHEDULED',
     },
 

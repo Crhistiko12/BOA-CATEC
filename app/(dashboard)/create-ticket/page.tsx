@@ -7,11 +7,12 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { MessageSquare, ArrowLeft, Check, AlertCircle, Sparkles } from 'lucide-react'
+import { MessageSquare, ArrowLeft, Check, AlertCircle, Sparkles, Loader2 } from 'lucide-react'
+import { createSupportTicket } from '@/lib/support-ticket-actions'
 
 const TICKET_CATEGORIES = [
     { value: 'equipaje', label: 'Equipaje', icon: '📦', color: 'from-blue-500 to-cyan-500' },
-    { value: 'vuelo', label: 'Cambio de Vuelo', icon: '✈️', color: 'from-purple-500 to-pink-500' },
+    { value: 'cambio_vuelo', label: 'Cambio de Vuelo', icon: '✈️', color: 'from-purple-500 to-pink-500' },
     { value: 'reembolso', label: 'Reembolso', icon: '💰', color: 'from-red-500 to-orange-500' },
     { value: 'millas', label: 'Millas', icon: '⭐', color: 'from-yellow-500 to-amber-500' },
     { value: 'otro', label: 'Otro', icon: '❓', color: 'from-green-500 to-emerald-500' }
@@ -22,12 +23,13 @@ export default function CreateTicketPage() {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isSuccess, setIsSuccess] = useState(false)
     const [ticketNumber, setTicketNumber] = useState('')
+    const [error, setError] = useState('')
 
     const [formData, setFormData] = useState({
         category: '',
         subject: '',
         description: '',
-        priority: 'normal',
+        priority: 'MEDIUM',
         flightNumber: ''
     })
 
@@ -35,22 +37,39 @@ export default function CreateTicketPage() {
         e.preventDefault()
 
         if (!formData.category || !formData.subject || !formData.description) {
-            alert('Por favor completa todos los campos obligatorios')
+            setError('Por favor completa todos los campos obligatorios')
             return
         }
 
         setIsSubmitting(true)
+        setError('')
 
-        setTimeout(() => {
-            const newTicketNumber = `TKT-${String(Math.floor(Math.random() * 900) + 100).padStart(3, '0')}`
-            setTicketNumber(newTicketNumber)
+        try {
+            const result = await createSupportTicket({
+                category: formData.category as any,
+                subject: formData.subject,
+                flightNumber: formData.flightNumber,
+                priority: formData.priority as any,
+                description: formData.description
+            })
+
+            if (!result.success) {
+                setError(result.error || 'Error al crear ticket')
+                setIsSubmitting(false)
+                return
+            }
+
+            setTicketNumber(result.ticketId?.slice(0, 8).toUpperCase() || 'TKT-XXX')
             setIsSuccess(true)
             setIsSubmitting(false)
 
             setTimeout(() => {
                 router.push('/support')
             }, 3000)
-        }, 1500)
+        } catch (err: any) {
+            setError(err.message || 'Error al crear ticket')
+            setIsSubmitting(false)
+        }
     }
 
     if (isSuccess) {
@@ -182,10 +201,10 @@ export default function CreateTicketPage() {
                                             onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
                                             className="w-full h-12 px-4 bg-white/10 border-2 border-white/20 focus:border-blue-400 rounded-xl text-white font-medium transition-all duration-300 focus:outline-none appearance-none cursor-pointer"
                                         >
-                                            <option value="low" className="bg-gray-900 text-white">Baja</option>
-                                            <option value="normal" className="bg-gray-900 text-white">Normal</option>
-                                            <option value="high" className="bg-gray-900 text-white">Alta</option>
-                                            <option value="urgent" className="bg-gray-900 text-white">Urgente</option>
+                                            <option value="LOW" className="bg-gray-900 text-white">Baja</option>
+                                            <option value="MEDIUM" className="bg-gray-900 text-white">Normal</option>
+                                            <option value="HIGH" className="bg-gray-900 text-white">Alta</option>
+                                            <option value="URGENT" className="bg-gray-900 text-white">Urgente</option>
                                         </select>
                                     </div>
 
@@ -206,6 +225,18 @@ export default function CreateTicketPage() {
                                         </p>
                                     </div>
 
+                                    {/* Error Box */}
+                                    {error && (
+                                        <div className="bg-red-500/20 border-2 border-red-500/30 rounded-xl p-4 flex gap-3">
+                                            <AlertCircle className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
+                                            <div>
+                                                <p className="text-sm text-red-200">
+                                                    <strong>Error:</strong> {error}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    )}
+
                                     {/* Info Box */}
                                     <div className="bg-blue-500/20 border-2 border-blue-500/30 rounded-xl p-4 flex gap-3">
                                         <AlertCircle className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" />
@@ -224,7 +255,7 @@ export default function CreateTicketPage() {
                                     >
                                         {isSubmitting ? (
                                             <>
-                                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                                                <Loader2 className="h-5 w-5 mr-2 animate-spin" />
                                                 Creando Ticket...
                                             </>
                                         ) : (
